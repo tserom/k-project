@@ -1,0 +1,68 @@
+# 在 k-project 根目录执行:
+#   docker compose -f infra/docker/docker-compose.yml up --build
+#
+# 构建上下文路径相对于本文件所在目录 (infra/docker)。
+
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: devroot
+      MYSQL_DATABASE: app
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-uroot", "-pdevroot"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 15s
+
+  user-backend:
+    build:
+      context: ../../apps/user-backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      HTTP_ADDR: ":8080"
+      GIN_MODE: release
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: devroot
+      DB_NAME: app
+      JWT_SECRET: docker-dev-only-replace-with-long-random-string
+      JWT_EXPIRE_HOURS: "24"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  hello-front:
+    build:
+      context: ../../apps/hello-front
+      dockerfile: Dockerfile
+    ports:
+      - "8100:80"
+
+  user-front:
+    build:
+      context: ../../apps/user-front
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: http://localhost:8080
+    ports:
+      - "8101:80"
+
+  host:
+    build:
+      context: ../../apps/host
+      dockerfile: Dockerfile
+      args:
+        VITE_HELLO_FRONT_URL: http://localhost:8100/
+        VITE_USER_FRONT_URL: http://localhost:8101/
+    ports:
+      - "8000:80"
+    depends_on:
+      - hello-front
+      - user-front

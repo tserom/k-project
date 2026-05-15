@@ -1,0 +1,6 @@
+.DS_Store
+infra/docker/.env
+
+# 根仓库只跟踪工作区元文件；各应用在各自目录内单独 git，勿把嵌套仓库当子模块 add 进来
+/apps/
+/vendor/
