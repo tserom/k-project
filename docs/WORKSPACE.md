@@ -31,14 +31,20 @@ k-project/
 
 **说明**：将目录移入 `apps/` / `vendor/` **不会改变**各子仓库的 `origin` 与提交历史；仅本地路径变化。详见 [REPO_LAYOUT.md](./REPO_LAYOUT.md)。
 
-## 端口约定（本地开发）
+## 端口名单（唯一信息源）
 
-| 服务 | 端口 | 说明 |
-|------|------|------|
-| 父应用 `apps/host` | **8000** | `vite.config.js` |
-| `apps/hello-front` | **8100** | 与父应用 `.env.development` 中 `VITE_HELLO_FRONT_URL` 一致 |
-| `apps/user-front` | **8101** | 与 `VITE_USER_FRONT_URL` 一致；`pnpm dev` 已写死 `--port 8101` |
-| `apps/user-backend` | **8080** | `HTTP_ADDR`，健康检查 `GET /healthz` |
+约束：**前端从 8100 起，后端从 8500 起**。每个服务的容器 nginx `listen`、网关 upstream、Vite dev `server.port` 都必须与下表一致；改这张表 = 改全工作区。
+
+| 服务 | 类型 | 端口 | 必须一致的位置 |
+|------|------|------|----------------|
+| `apps/host` | 前端（父） | **8100** | `vite.config.js` · `docker/nginx.conf` · `infra/gateway/nginx.conf` upstream · compose |
+| `apps/hello-front` | 前端（子） | **8101** | `vite.config.js` · `docker/nginx.conf` · `infra/gateway/nginx.conf` upstream · compose |
+| `apps/user-front` | 前端（子） | **8102** | `vite.config.ts` · `docker/nginx.conf` · `infra/gateway/nginx.conf` upstream · compose |
+| `apps/user-backend` | 后端（Go） | **8500** | `.env` `HTTP_ADDR` · `infra/gateway/nginx.conf` upstream · compose |
+| `mysql` | 基础设施 | 3306（容器内） / 3307→3306（宿主映射） | `infra/docker/docker-compose.yml`，仅为本机直连库方便保留宿主映射 |
+| `gateway` | 入口（nginx） | **80**（唯一对外端口） | `infra/gateway/nginx.conf` · `infra/docker/docker-compose.yml` |
+
+所有内部服务**不再单独暴露宿主端口**：浏览器只通过 `http://k-project.com/` 访问网关，由网关按路径分流，**同源、零 CORS、无反向代理配置**。详见 [SINGLE_DOMAIN.md](./SINGLE_DOMAIN.md)。
 
 ## 依赖关系（简图）
 

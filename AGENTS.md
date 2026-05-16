@@ -22,11 +22,16 @@
 - **hello-front**：曾用于 Node/React 版本试验；`package.json` 里 React 版本可能与父应用不同，集成时注意无界与运行时兼容性。
 - **user-backend**：Go **1.22.x**，配置见 `.env.example`；**勿**将含密钥的 `.env` 写入版本控制。
 
+## 端口名单（重要）
+
+所有服务端口的**唯一信息源**：[`docs/WORKSPACE.md`](docs/WORKSPACE.md#端口名单唯一信息源)。前端从 8100 起，后端从 8500 起，每个端口必须同时出现在该服务的 `vite.config.*`、`docker/nginx.conf`、`infra/gateway/nginx.conf` upstream、以及 compose 中。改端口先改这张表，再批量同步。
+
 ## Docker
 
-- 编排文件：`infra/docker/docker-compose.yml`。
-- 父应用对应 compose 服务名为 **`host`**（构建上下文 `apps/host`）。
-- 父应用构建参数中的子应用 URL 必须是**浏览器能访问的地址**（通常为 `http://localhost:端口/`），与 compose 暴露端口一致；详见 `docs/DOCKER.md`。
+- 编排文件：`infra/docker/docker-compose.yml`，已内含 `gateway` 服务（同域入口，唯一对外端口 80）。
+- 浏览器只访问 `http://k-project.com/`（hosts: `127.0.0.1 k-project.com`），不再用多端口 `localhost:xxxx` 入口。
+- 父应用构建参数 `VITE_HELLO_FRONT_URL` / `VITE_USER_FRONT_URL` 默认是同源相对路径 `/micro/hello/`、`/micro/user/`；详见 `docs/DOCKER.md`、`docs/SINGLE_DOMAIN.md`。
+- 子应用 nginx 与后端 Go 中**不再**配 CORS / 反向代理；同源方案下都不需要。
 
 ## 文档索引
 
@@ -35,3 +40,4 @@
 - `docs/DOCKER.md` — 容器化约定与排错
 - `docs/reference-wujie-upstream.md` — `vendor/wujie/` 说明
 - `docs/REPO_LAYOUT.md` — 物理目录与 Git 说明
+- `docs/SINGLE_DOMAIN.md` — 正式域名 **k-project.com** 与 `infra/gateway/`

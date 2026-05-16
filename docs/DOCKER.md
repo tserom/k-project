@@ -2,36 +2,44 @@
 
 ## 目标
 
-- 一条命令拉起：**MySQL + user-backend + 三个前端静态站点（nginx）**，端口与本地开发保持一致，便于父应用通过无界加载子应用。
-- 配置集中在 `infra/docker/docker-compose.yml`；各应用自带 `Dockerfile`（位于 `apps/<name>/`）。
+一条命令拉起 **MySQL + 后端 + 三个前端 + 网关**，浏览器只访问 **`http://k-project.com/`**（同源、无 CORS）。
 
-## 浏览器可访问 URL（关键）
+编排：`infra/docker/docker-compose.yml`（已内含 `gateway` 服务）。
 
-无界在**浏览器**里加载子应用 `entry`，因此父应用镜像构建时写入的 `VITE_HELLO_FRONT_URL` / `VITE_USER_FRONT_URL` 必须是宿主机访问地址（默认 compose 映射为 `http://localhost:8100/`、`http://localhost:8101/`）。
+## 启动
 
-若部署到域名或反向代理路径前缀变化，需**重新构建父应用镜像**（compose 服务名 **`host`**，上下文 `apps/host`）并传入对应 build args。
+```bash
+# hosts: 127.0.0.1 k-project.com
+docker compose -f infra/docker/docker-compose.yml up --build
+```
 
-## 子应用 API（user-front）
+## 构建变量（同源）
 
-镜像构建默认设置 `VITE_API_BASE=http://localhost:8080`，即浏览器直接请求宿主机上的后端端口。若以后前面加统一网关，应改为同域前缀或完整 API 域名并重建 `user-front` 镜像。
+| 服务 | 变量 | Docker 默认值 |
+|------|------|----------------|
+| `host` | `VITE_HELLO_FRONT_URL` | `/micro/hello/` |
+| `host` | `VITE_USER_FRONT_URL` | `/micro/user/` |
+| `user-front` | `VITE_API_BASE` | （空，请求 `/api/v1/...`） |
+
+修改后需 `docker compose build` 对应服务。
+
+## 端口
+
+见 [WORKSPACE.md](./WORKSPACE.md) 端口名单。容器内 nginx / Go 监听端口须与网关 `infra/gateway/nginx.conf` upstream 一致。
 
 ## 环境变量与安全
 
-- **不要**把真实 `JWT_SECRET`、数据库密码提交进 Git。
-- 本地 compose 可使用 `infra/docker/.env`（文件需自建）；勿提交。
-
-## 常用命令
-
-```bash
-# 在 k-project 根目录
-docker compose -f infra/docker/docker-compose.yml up --build
-
-# 后台运行
-docker compose -f infra/docker/docker-compose.yml up -d --build
-```
+- 勿将真实 `JWT_SECRET`、数据库密码提交 Git。
+- 本地 compose 示例值在 `docker-compose.yml`；外置可用 `infra/docker/.env`（勿提交）。
 
 ## 故障排查
 
-1. **子应用白屏**：检查父应用构建时的 `VITE_*` 与浏览器实际访问的 host/port 是否一致。
-2. **user-front 无法登录/调 API**：检查 `VITE_API_BASE` 与后端是否可从浏览器访问（CORS、端口映射）。
-3. **后端连不上库**：确认 `user-backend` 服务中 `DB_HOST=mysql` 与 compose 服务名一致，且 MySQL 已 healthy。
+1. **子应用白屏**：确认父应用构建时 `VITE_*` 为 `/micro/hello/`、`/micro/user/`，且通过 **k-project.com** 访问（非多端口 localhost）。
+2. **API 失败**：浏览器 Network 里 API 的 Host 应为 `k-project.com`，路径 `/api/v1/...`。
+3. **后端连不上库**：`DB_HOST=mysql`，等 MySQL healthy。
+4. **80 被占用**：改 compose 中 `gateway` 的 `ports` 为 `"8080:80"`，访问 `http://k-project.com:8080/`。
+5. **镜像拉取超时**：见下文 Hub 加速说明（与原 README 相同）。
+
+### 构建时报 `auth.docker.io` 超时
+
+配置 Docker Desktop **Settings → Docker Engine** 的 `registry-mirrors`，或走代理后重试 `docker pull nginx:alpine`。
