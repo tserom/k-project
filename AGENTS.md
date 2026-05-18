@@ -33,9 +33,18 @@
 - 父应用构建参数 `VITE_HELLO_FRONT_URL` / `VITE_USER_FRONT_URL` 默认是同源相对路径 `/micro/hello/`、`/micro/user/`；详见 `docs/DOCKER.md`、`docs/SINGLE_DOMAIN.md`。
 - 子应用 nginx 与后端 Go 中**不再**配 CORS / 反向代理；同源方案下都不需要。
 
+## Cursor Skills（AI 自动加载范围）
+
+- **工作区根** `k-project/.cursor/skills/`：以根目录打开工作区时，Agent 会按 description **自动**匹配并读取。
+- **子应用内**（如 `apps/user-backend/.cursor/skills/go-gin-gorm-service/`）：根工作区模式下**通常不会**进入自动 skill 列表；改该应用时 Agent 应 **主动 Read** 该路径，或把 skill **复制/摘要到** 根目录 `.cursor/skills/`（推荐对跨仓常用约定这样做）。
+- **`~/.cursor/skills-cursor/`**：Cursor 内置 skill，与业务仓库无关。
+
+实现导航配置等功能前，改 `user-backend` 请先读 `apps/user-backend/.cursor/skills/go-gin-gorm-service/SKILL.md`（或在工作区根增加等价 skill）。
+
 ## 文档索引
 
 - `docs/WORKSPACE.md` — 端口、仓库、依赖图
+- `docs/NAVIGATION_CONFIG.md` — Host 导航 DB/API/管理页方案（v1 已实现；代码在各 `apps/*` 仓库）
 - `docs/MICROFRONTEND.md` — wujie 父子关系与 env
 - `docs/DOCKER.md` — 容器化约定与排错
 - `docs/reference-wujie-upstream.md` — `vendor/wujie/` 说明
