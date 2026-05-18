@@ -1,0 +1,57 @@
+---
+description: Logging conventions for k-project apps (Zap backend, frontend logger, audit events). Read when adding logs or observability.
+globs: apps/**/*
+alwaysApply: false
+---
+
+# k-project 日志约定
+
+改 `apps/user-backend` 时另读 `apps/user-backend/.cursor/skills/go-gin-gorm-service/SKILL.md` 的 Logging 节。
+
+## 后端（user-backend）
+
+- 入口：`pkg/logger.New(GIN_MODE, LOG_LEVEL)`；禁止 handler/service 里 `fmt.Println`。
+- HTTP：全局 `RequestID` 中间件 → `RequestLogger`；响应头 `X-Request-ID`。
+- 业务日志：handler 注入 `*zap.Logger`；带 `middleware.ZapFields(c)`（含 `request_id`，已登录时含 `user_id`）。
+- 访问日志字段：`status`、`method`、`path`、`latency`、`request_id`。
+- 5xx / 未预期错误：`log.Error` + `zap.Error(err)`；4xx 由 `RequestLogger` 打 `Warn`，handler 不必重复。
+- 登录失败（错误凭证）：**不要**打 Error（防枚举与噪音）。
+- 审计（admin 写操作）：`log.Info("audit", zap.String("action", "..."), ...)`；勿记密码、JWT、`Authorization`。
+- 输出：stdout JSON（`GIN_MODE=release`）；本地 `docker compose logs user-backend`。
+
+```go
+// ✅  handler 内
+h.log.Error("registration failed", append(middleware.ZapFields(c), zap.Error(err))...)
+
+// ✅  导航保存成功（审计）
+h.log.Info("audit",
+    append(middleware.ZapFields(c),
+        zap.String("action", "navigation.replace"),
+    )...,
+)
+
+// ❌
+fmt.Println(err)
+log.Info("login", zap.String("password", req.Password))
+```
+
+## 前端（host / user-front / hello-front）
+
+- 统一入口：`src/lib/logger.js`（host、hello-front）或 `src/lib/logger.ts`（user-front）。
+- 使用 `import { logger } from '../lib/logger.js'` 或 `@/lib/logger`；**禁止**散落 `console.*`。
+- `logger.debug` / `info` 仅 `import.meta.env.DEV`；`warn` / `error` 始终输出；每条带 `{ app: '...' }`。
+- API 5xx：`user-front` 在 `api/client.ts` 统一打 `error`（含 `path`、`status`、`requestId`）；4xx 不打 Error（含登录 401）。
+- Host 导航：`api/navigation.js` 对 5xx / 无效 JSON 打 `error`；子应用加载失败见 `SubAppView` `loadError`。
+- 响应头 `X-Request-ID` 可与后端日志关联（有则写入 ctx）。
+- 阶段 3 再接入 Sentry 或 `POST /client-errors`；本阶段不引入。
+
+## 环境变量
+
+| 变量 | 默认 | 说明 |
+|------|------|------|
+| `GIN_MODE` | `debug` | `release` → production JSON |
+| `LOG_LEVEL` | （空） | `debug`/`info`/`warn`/`error`；空则用模式默认 |
+
+## 尚未实现（勿提前做）
+
+- 审计表 `audit_logs`、Loki/ELK、前端错误上报 API。
