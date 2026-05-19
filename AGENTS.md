@@ -14,6 +14,8 @@
 | `apps/user-front/` | 用户中心子应用页面、调用后端的 `src/api`、Vite `proxy` 与 `VITE_API_BASE` |
 | `apps/hello-front/` | 试验子应用；与父应用联调时保持端口与父应用环境变量一致 |
 | `apps/user-backend/` | Go API、数据库模型、JWT、Swagger 生成物 |
+| `apps/inventory-front/` | 库存子应用（React 19），Host 无界 entry `/micro/inventory/` |
+| `apps/inventory-backend/` | 库存 API（Go），网关路径 `/api/inventory/v1` |
 | `vendor/wujie/` | **官方上游克隆**：优先只读；若需改示例，先考虑是否应在自己业务仓库改 |
 
 ## 工具链约定

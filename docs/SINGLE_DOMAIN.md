@@ -26,7 +26,9 @@ sudo sh -c 'echo "127.0.0.1 k-project.com" >> /etc/hosts'
 | `http://k-project.com/` | `apps/host` | 8100 |
 | `http://k-project.com/micro/hello/` | `apps/hello-front` | 8101 |
 | `http://k-project.com/micro/user/` | `apps/user-front` | 8102 |
+| `http://k-project.com/micro/inventory/` | `apps/inventory-front` | 8103 |
 | `http://k-project.com/api/v1/...` | `apps/user-backend` | 8500 |
+| `http://k-project.com/api/inventory/v1/...` | `apps/inventory-backend` | 8501 |
 
 ---
 

@@ -8,6 +8,8 @@ k-project/
 │   ├── host/              # 微前端父应用（原 main-project-front）
 │   ├── user-front/
 │   ├── hello-front/
+│   ├── inventory-front/
+│   ├── inventory-backend/
 │   └── user-backend/
 ├── vendor/
 │   └── wujie/             # 无界上游源码（参考）
@@ -40,7 +42,9 @@ k-project/
 | `apps/host` | 前端（父） | **8100** | `vite.config.js` · `docker/nginx.conf` · `infra/gateway/nginx.conf` upstream · compose |
 | `apps/hello-front` | 前端（子） | **8101** | `vite.config.js` · `docker/nginx.conf` · `infra/gateway/nginx.conf` upstream · compose |
 | `apps/user-front` | 前端（子） | **8102** | `vite.config.ts` · `docker/nginx.conf` · `infra/gateway/nginx.conf` upstream · compose |
+| `apps/inventory-front` | 前端（子） | **8103** | `vite.config.ts` · `docker/nginx.conf` · `infra/gateway/nginx.conf` upstream · compose |
 | `apps/user-backend` | 后端（Go） | **8500** | `.env` `HTTP_ADDR` · `infra/gateway/nginx.conf` upstream · compose |
+| `apps/inventory-backend` | 后端（Go） | **8501** | `.env` `HTTP_ADDR` · `infra/gateway/nginx.conf` upstream · compose |
 | `mysql` | 基础设施 | 3306（容器内） / 3307→3306（宿主映射） | `infra/docker/docker-compose.yml`，仅为本机直连库方便保留宿主映射 |
 | `gateway` | 入口（nginx） | **80**（唯一对外端口） | `infra/gateway/nginx.conf` · `infra/docker/docker-compose.yml` |
 
