@@ -13,7 +13,7 @@
 | 模式 | 父应用 entry | 说明 |
 |------|----------------|------|
 | **同源（推荐）** | `/micro/hello/`、`/micro/user/` | Docker + `k-project.com` 网关；见 [SINGLE_DOMAIN.md](./SINGLE_DOMAIN.md) |
-| **多端口 dev** | `http://localhost:8101/`、`http://localhost:8102/` | 各服务 `pnpm dev`，见 `apps/host/.env.development` |
+| **多端口 dev** | `http://localhost:8101/`、`http://localhost:8102/` | 各服务 `pnpm dev`，见 `apps/host/.env.development`；导航 API 仍可能返回 `/micro/*`，host 的 `vite.config.js` 会将 `/micro/*` 代理到对应子应用端口，且 `navigationNormalize` 在 dev 下优先使用 `VITE_*_FRONT_URL` 绝对地址，避免无界 iframe 加载到 host 自身（顶栏/欢迎页套娃） |
 
 改端口须同步：端口表 → 各服务 nginx / Vite → 网关 upstream → 父应用 `VITE_*`。
 
