@@ -17,6 +17,11 @@
 
 改端口须同步：端口表 → 各服务 nginx / Vite → 网关 upstream → 父应用 `VITE_*`。
 
+## Host 壳层（欢迎页与用户菜单）
+
+- 访问根路径 `/`（无打开的微前端页签）时展示 **中台欢迎页**，不再自动跳进第一个子应用。
+- 顶栏右上角 **用户菜单**：未登录跳转 `user` 应用的登录路由；已登录可进个人中心、退出。鉴权 token 与子应用共用 `localStorage` 键 **`user-front:access-token`**（须与 `apps/user-front` 保持一致）。
+
 ## 子应用与后端
 
 - **Docker / 网关**：`user-front` 的 `VITE_API_BASE` 留空，请求同域 `/api/v1/...`。
