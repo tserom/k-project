@@ -53,12 +53,9 @@ services:
       DB_PORT: "3306"
       DB_USER: root
       DB_PASSWORD: devroot
-      DB_NAME: inventory
-      JWT_SECRET: docker-dev-inventory-jwt-replace-me
+      DB_NAME: app
+      JWT_SECRET: docker-dev-only-replace-with-long-random-string
       JWT_EXPIRE_HOURS: "24"
-      ADMIN_BOOTSTRAP_EMAIL: admin@inventory.local
-      ADMIN_BOOTSTRAP_PASSWORD: change-me-admin
-      ALLOW_REGISTER: "false"
     depends_on:
       mysql:
         condition: service_healthy
