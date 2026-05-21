@@ -38,6 +38,7 @@
 ## Cursor Skills（AI 自动加载范围）
 
 - **工作区根** `k-project/.cursor/skills/`：以根目录打开工作区时，Agent 会按 description **自动**匹配并读取。
+- **子应用前端范本**：`.cursor/skills/k-project-subapp-front/`（目录结构、`config/routes`、wujie 路由桥）；各 `apps/*-front/.cursor/skills/k-project-subapp-front/` 为同 skill 的 app 特例摘要。
 - **子应用内**（如 `apps/user-backend/.cursor/skills/go-gin-gorm-service/`）：根工作区模式下**通常不会**进入自动 skill 列表；改该应用时 Agent 应 **主动 Read** 该路径，或把 skill **复制/摘要到** 根目录 `.cursor/skills/`（推荐对跨仓常用约定这样做）。
 - **`~/.cursor/skills-cursor/`**：Cursor 内置 skill，与业务仓库无关。
 

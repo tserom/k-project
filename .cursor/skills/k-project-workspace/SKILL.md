@@ -23,9 +23,10 @@ description: >-
 
 | 路径 | 何时读 |
 |------|--------|
+| [`k-project-subapp-front/SKILL.md`](k-project-subapp-front/SKILL.md) | 改 user/hello/inventory 子应用结构、路由、wujie |
 | [`apps/user-backend/.cursor/skills/go-gin-gorm-service/SKILL.md`](../../../apps/user-backend/.cursor/skills/go-gin-gorm-service/SKILL.md) | 改 Go API、GORM、JWT、路由 |
 | `apps/host/.cursor/` | 若存在 host 专用 skill |
-| `apps/user-front/.cursor/` | 若存在前端专用 skill |
+| `apps/user-front/.cursor/skills/project-environment/` | user-front 工具链与目录（与 subapp-front 互补） |
 
 ## 导航功能约定（摘要）
 
