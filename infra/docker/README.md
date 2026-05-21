@@ -3,10 +3,16 @@
 在 **`k-project` 根目录**执行：
 
 ```bash
-docker compose -f infra/docker/docker-compose.yml up --build
+# 常驻网关（本地 dev 默认，上游为宿主机进程）
+docker compose -f infra/docker/docker-compose.yml up gateway -d --build
+
+# 全栈容器联调
+GATEWAY_UPSTREAM_MODE=docker docker compose -f infra/docker/docker-compose.yml up --build
 ```
 
 浏览器访问：**http://k-project.com/**（需先在 `/etc/hosts` 添加 `127.0.0.1 k-project.com`）。
+
+网关可独立启动，其他服务按需在本机 `pnpm dev` 或 `docker compose up <service>`。见 [SINGLE_DOMAIN.md §4](../docs/SINGLE_DOMAIN.md#4-本地开发gateway-常驻--服务按需) 与 `infra/gateway/README.md`。
 
 ## 服务与端口
 

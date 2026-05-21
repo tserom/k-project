@@ -2,7 +2,7 @@
 
 目标：浏览器只访问 **`k-project.com`**，父应用、子应用、API **同源，无需 CORS**。
 
-实现：**`infra/gateway/nginx.conf`** 按路径转发；Compose 已内置 `gateway` 服务（见 `infra/docker/docker-compose.yml`）。
+实现：**`infra/gateway/nginx.host.conf`** / **`nginx.docker.conf`** 按路径转发（由 `GATEWAY_UPSTREAM_MODE` 选择）；Compose 已内置 `gateway` 服务（见 `infra/docker/docker-compose.yml`）。
 
 ---
 
@@ -51,15 +51,39 @@ VITE_API_BASE=
 
 示例：[apps/user-front/.env.k-project.com](../apps/user-front/.env.k-project.com)
 
-子应用 Vite `base: './'`，网关对 `/micro/*` 做 rewrite（见 `infra/gateway/nginx.conf`）。
+子应用 Vite `base: './'`，网关对 `/micro/*` 做 rewrite（见 `infra/gateway/nginx.host.conf` / `nginx.docker.conf`）。
 
 ---
 
-## 4. 本机 Docker 一键起
+## 4. 本地开发：gateway 常驻 + 服务按需
+
+默认 **`GATEWAY_UPSTREAM_MODE=host`**：网关容器转发到宿主机 `host.docker.internal:端口`，适合 `pnpm dev` / `go run` 按需启动。
+
+```bash
+# 1. 常驻网关（不拉其他服务）
+docker compose -f infra/docker/docker-compose.yml up gateway -d --build
+
+# 2. 按需在本机启动要联调的服务（端口见上文表格）
+cd apps/host && pnpm dev
+cd apps/user-backend && go run .
+```
+
+未启动的上游会返回 **502**，网关保持运行。若上游全部在 Docker 内按需启动，改用：
+
+```bash
+GATEWAY_UPSTREAM_MODE=docker docker compose -f infra/docker/docker-compose.yml up gateway -d --build
+docker compose -f infra/docker/docker-compose.yml up user-backend -d   # 示例
+```
+
+详见 `infra/gateway/README.md`。
+
+---
+
+## 5. 本机 Docker 一键全栈
 
 ```bash
 # hosts 已配置 k-project.com
-docker compose -f infra/docker/docker-compose.yml up --build
+GATEWAY_UPSTREAM_MODE=docker docker compose -f infra/docker/docker-compose.yml up --build
 ```
 
 浏览器：**http://k-project.com/**
@@ -68,7 +92,7 @@ docker compose -f infra/docker/docker-compose.yml up --build
 
 ---
 
-## 5. 与多端口 dev 对比
+## 6. 与多端口 dev 对比
 
 | 模式 | 入口 | CORS |
 |------|------|------|
@@ -77,7 +101,7 @@ docker compose -f infra/docker/docker-compose.yml up --build
 
 ---
 
-## 6. K8s Ingress 示例
+## 7. K8s Ingress 示例
 
 ```yaml
 spec:
@@ -103,7 +127,7 @@ TLS：`tls.hosts: [k-project.com]` + cert-manager 等。
 
 ---
 
-## 7. 实施顺序
+## 8. 实施顺序
 
 1. 配置 **k-project.com** 解析。  
 2. 父/子应用使用上文 **构建环境变量**。  
