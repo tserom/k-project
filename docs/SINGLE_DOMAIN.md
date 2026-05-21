@@ -21,14 +21,24 @@ sudo sh -c 'echo "127.0.0.1 k-project.com" >> /etc/hosts'
 
 ## 2. URL 与路径
 
+入口为 **`https://k-project.com/`**（HTTP 80 自动跳转到 HTTPS）。摄像头等浏览器能力需要 HTTPS。
+
 | 地址 | 服务 | 容器端口 |
 |------|------|----------|
-| `http://k-project.com/` | `apps/host` | 8100 |
-| `http://k-project.com/micro/hello/` | `apps/hello-front` | 8101 |
-| `http://k-project.com/micro/user/` | `apps/user-front` | 8102 |
-| `http://k-project.com/micro/inventory/` | `apps/inventory-front` | 8103 |
-| `http://k-project.com/api/v1/...` | `apps/user-backend` | 8500 |
-| `http://k-project.com/api/inventory/v1/...` | `apps/inventory-backend` | 8501 |
+| `https://k-project.com/` | `apps/host` | 8100 |
+| `https://k-project.com/micro/hello/` | `apps/hello-front` | 8101 |
+| `https://k-project.com/micro/user/` | `apps/user-front` | 8102 |
+| `https://k-project.com/micro/inventory/` | `apps/inventory-front` | 8103 |
+| `https://k-project.com/api/v1/...` | `apps/user-backend` | 8500 |
+| `https://k-project.com/api/inventory/v1/...` | `apps/inventory-backend` | 8501 |
+
+### 本地 HTTPS 证书
+
+```bash
+brew install mkcert && mkcert -install   # 首次
+./infra/gateway/gen-certs.sh             # 生成 infra/gateway/certs/*.pem
+docker compose -f infra/docker/docker-compose.yml up gateway -d --build
+```
 
 ---
 
@@ -86,9 +96,9 @@ docker compose -f infra/docker/docker-compose.yml up user-backend -d   # 示例
 GATEWAY_UPSTREAM_MODE=docker docker compose -f infra/docker/docker-compose.yml up --build
 ```
 
-浏览器：**http://k-project.com/**
+浏览器：**https://k-project.com/**
 
-80 被占用时，在 compose 里把 `gateway` 的 `ports` 改为 `"8080:80"`，访问 **http://k-project.com:8080/**。
+443 被占用时，在 compose 里把 `gateway` 的 `ports` 改为 `"8443:443"`，访问 **https://k-project.com:8443/**。
 
 ---
 
@@ -97,7 +107,7 @@ GATEWAY_UPSTREAM_MODE=docker docker compose -f infra/docker/docker-compose.yml u
 | 模式 | 入口 | CORS |
 |------|------|------|
 | 多端口 `pnpm dev` | `localhost:8100` / `8101` / `8102` + API `8500` | 可能跨域 |
-| 单域名 gateway | **`k-project.com`** | 不需要 |
+| 单域名 gateway | **`https://k-project.com`** | 不需要 |
 
 ---
 

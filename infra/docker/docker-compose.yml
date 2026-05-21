@@ -1,7 +1,7 @@
 # 在 k-project 根目录执行:
 #   docker compose -f infra/docker/docker-compose.yml up --build
 #
-# 浏览器只访问 http://k-project.com/（需 hosts: 127.0.0.1 k-project.com）
+# 浏览器只访问 https://k-project.com/（需 hosts: 127.0.0.1 k-project.com，先运行 infra/gateway/gen-certs.sh）
 # 端口名单见 docs/WORKSPACE.md
 
 services:
@@ -105,4 +105,7 @@ services:
       - "host.docker.internal:host-gateway"
     ports:
       - "80:80"
+      - "443:443"
+    volumes:
+      - ../gateway/certs:/etc/nginx/certs:ro
     restart: unless-stopped

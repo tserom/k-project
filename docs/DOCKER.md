@@ -2,9 +2,9 @@
 
 ## 目标
 
-一条命令拉起 **MySQL + 后端 + 三个前端 + 网关**，浏览器只访问 **`http://k-project.com/`**（同源、无 CORS）。
+一条命令拉起 **MySQL + 后端 + 三个前端 + 网关**，浏览器只访问 **`https://k-project.com/`**（同源、无 CORS）。
 
-编排：`infra/docker/docker-compose.yml`（已内含 `gateway` 服务）。
+编排：`infra/docker/docker-compose.yml`（已内含 `gateway` 服务）。首次需运行 `./infra/gateway/gen-certs.sh` 生成本地 TLS 证书。
 
 ## 启动
 
@@ -37,8 +37,9 @@ docker compose -f infra/docker/docker-compose.yml up --build
 1. **子应用白屏**：确认父应用构建时 `VITE_*` 为 `/micro/hello/`、`/micro/user/`，且通过 **k-project.com** 访问（非多端口 localhost）。
 2. **API 失败**：浏览器 Network 里 API 的 Host 应为 `k-project.com`，路径 `/api/v1/...`。
 3. **后端连不上库**：`DB_HOST=mysql`，等 MySQL healthy。
-4. **80 被占用**：改 compose 中 `gateway` 的 `ports` 为 `"8080:80"`，访问 `http://k-project.com:8080/`。
-5. **镜像拉取超时**：见下文 Hub 加速说明（与原 README 相同）。
+4. **443 被占用**：改 compose 中 `gateway` 的 `ports` 为 `"8443:443"`，访问 `https://k-project.com:8443/`。
+5. **gateway 启动失败（missing TLS certs）**：运行 `./infra/gateway/gen-certs.sh` 后重启 gateway。
+6. **镜像拉取超时**：见下文 Hub 加速说明（与原 README 相同）。
 
 ### 构建时报 `auth.docker.io` 超时
 

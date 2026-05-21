@@ -46,9 +46,9 @@ k-project/
 | `apps/user-backend` | 后端（Go） | **8500** | `.env` `HTTP_ADDR` · `infra/gateway/nginx.conf` upstream · compose |
 | `apps/inventory-backend` | 后端（Go） | **8501** | `.env` `HTTP_ADDR` · `infra/gateway/nginx.conf` upstream · compose |
 | `mysql` | 基础设施 | 3306（容器内） / 3307→3306（宿主映射） | `infra/docker/docker-compose.yml`，仅为本机直连库方便保留宿主映射 |
-| `gateway` | 入口（nginx） | **80**（唯一对外端口） | `infra/gateway/nginx.conf` · `infra/docker/docker-compose.yml` |
+| `gateway` | 入口（nginx） | **80**（跳转 HTTPS）、**443**（TLS） | `infra/gateway/nginx.*.conf` · `infra/docker/docker-compose.yml` |
 
-所有内部服务**不再单独暴露宿主端口**：浏览器只通过 `http://k-project.com/` 访问网关，由网关按路径分流，**同源、零 CORS、无反向代理配置**。详见 [SINGLE_DOMAIN.md](./SINGLE_DOMAIN.md)。
+所有内部服务**不再单独暴露宿主端口**：浏览器只通过 `https://k-project.com/` 访问网关，由网关按路径分流，**同源、零 CORS、无反向代理配置**。TLS 证书见 `infra/gateway/gen-certs.sh`。详见 [SINGLE_DOMAIN.md](./SINGLE_DOMAIN.md)。
 
 ## 依赖关系（简图）
 

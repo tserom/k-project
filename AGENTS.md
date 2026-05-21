@@ -31,7 +31,7 @@
 ## Docker
 
 - 编排文件：`infra/docker/docker-compose.yml`，已内含 `gateway` 服务（同域入口，唯一对外端口 80）。
-- 浏览器只访问 `http://k-project.com/`（hosts: `127.0.0.1 k-project.com`），不再用多端口 `localhost:xxxx` 入口。
+- 浏览器只访问 `https://k-project.com/`（hosts: `127.0.0.1 k-project.com`；TLS 见 `infra/gateway/gen-certs.sh`），不再用多端口 `localhost:xxxx` 入口。
 - 父应用构建参数 `VITE_HELLO_FRONT_URL` / `VITE_USER_FRONT_URL` 默认是同源相对路径 `/micro/hello/`、`/micro/user/`；详见 `docs/DOCKER.md`、`docs/SINGLE_DOMAIN.md`。
 - 子应用 nginx 与后端 Go 中**不再**配 CORS / 反向代理；同源方案下都不需要。
 

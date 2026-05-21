@@ -10,7 +10,7 @@ docker compose -f infra/docker/docker-compose.yml up gateway -d --build
 GATEWAY_UPSTREAM_MODE=docker docker compose -f infra/docker/docker-compose.yml up --build
 ```
 
-浏览器访问：**http://k-project.com/**（需先在 `/etc/hosts` 添加 `127.0.0.1 k-project.com`）。
+浏览器访问：**https://k-project.com/**（需先在 `/etc/hosts` 添加 `127.0.0.1 k-project.com`，并运行 `./infra/gateway/gen-certs.sh` 生成 TLS 证书）。
 
 网关可独立启动，其他服务按需在本机 `pnpm dev` 或 `docker compose up <service>`。见 [SINGLE_DOMAIN.md §4](../docs/SINGLE_DOMAIN.md#4-本地开发gateway-常驻--服务按需) 与 `infra/gateway/README.md`。
 
@@ -20,7 +20,7 @@ GATEWAY_UPSTREAM_MODE=docker docker compose -f infra/docker/docker-compose.yml u
 
 | 服务 | 宿主端口 | 说明 |
 |------|-----------|------|
-| `gateway` | **80** | 唯一浏览器入口，按路径转发 |
+| `gateway` | **80**、**443** | 唯一浏览器入口；80 跳转 HTTPS，443 按路径转发 |
 | `mysql` | **3307**→3306 | 可选，本机直连库用 `127.0.0.1:3307` |
 
 `host`、`hello-front`、`user-front`、`user-backend` **不映射宿主端口**，只经 `gateway` 访问。
@@ -40,5 +40,5 @@ GATEWAY_UPSTREAM_MODE=docker docker compose -f infra/docker/docker-compose.yml u
 
 ## 局限
 
-- 网关仅 HTTP 80；生产 TLS 见 [docs/SINGLE_DOMAIN.md](../../docs/SINGLE_DOMAIN.md)。
+- 本地 TLS 由 mkcert 签发，仅用于开发；生产 TLS 见 [docs/SINGLE_DOMAIN.md](../../docs/SINGLE_DOMAIN.md)。
 - `vendor/wujie/` 不参与镜像构建。
