@@ -380,6 +380,35 @@ erDiagram
 | POST | `/stock-movements/adjust` | admin | 盘点调整 |
 | GET | `/stock-movements` | 登录 | 分页流水查询 |
 
+### 5.6 出入库单（可编辑，AG Grid 页）
+
+面向非标货品（不锈钢板、棒材等）：`goods_detail` 自由文本；`party_name` / `party_contact` 表示交易主体。
+
+| 方法 | 路径 | 角色 | 说明 |
+|------|------|------|------|
+| GET | `/inventory-transactions` | operator+ | 分页；`type`、`party_name`、`q`、`biz_from`、`biz_to` |
+| POST | `/inventory-transactions` | operator+ | 新增；未传 `product_id` 时使用 SKU `MISC` 杂项商品 |
+| PUT | `/inventory-transactions/:id` | operator+ | 编辑；冲销原 `movement_id` 再写入新流水 |
+
+前端路由：`/transactions`（`inventory-front` + AG Grid Community）。
+
+### 5.7 销售发货单（还款协议）
+
+面向不锈钢零售开单：按重量计价（`amount = weight_kg × unit_price`），品名规格自由文本；**不联动库存**。
+
+| 方法 | 路径 | 角色 | 说明 |
+|------|------|------|------|
+| GET | `/sales-deliveries` | operator+ | 分页；`party_b_name`、`q`、`doc_from`、`doc_to` |
+| GET | `/sales-deliveries/:id` | operator+ | 详情（含 `items` 明细行） |
+| POST | `/sales-deliveries` | operator+ | 新建；`doc_no` 自动生成（`SD` + 日期 + 序号） |
+| PUT | `/sales-deliveries/:id` | operator+ | 编辑；明细行全量替换 |
+
+**主表字段**：`doc_no`、`doc_date`、`party_a_name`（甲方）、`party_b_name`（乙方）、`warehouse_name`、`phone`、`total_amount`、`paid_amount`、`balance_due`。
+
+**明细行**：`product_spec`、`quantity`（件数）、`weight_kg`、`unit_price`、`amount`、`note`。
+
+前端路由：`/sales-deliveries`（列表）、`/sales-deliveries/new`（新建）、`/sales-deliveries/:id`（详情）、`/sales-deliveries/:id/edit`（编辑）。
+
 **事务规则**（`internal/service/stock_service.go`）：
 
 1. 开启 DB 事务
@@ -410,6 +439,7 @@ erDiagram
 | `/movements` | 流水 | 时间范围筛选 |
 | `/movements/in` | 入库 | 表单 |
 | `/movements/out` | 出库 | 表单 + 可用库存展示 |
+| `/sales-deliveries` | 销售发货单 | 列表、筛选、新建/查看/编辑 |
 
 **布局**：左侧菜单 + 顶栏用户；未登录跳转 `/login`。
 
