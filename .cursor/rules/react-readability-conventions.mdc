@@ -1,0 +1,67 @@
+---
+description: React/UI 与 *Api 可读性约定（少抽象、少 useEffect 业务链、入口注释）
+alwaysApply: false
+globs:
+  - src/**/*.tsx
+  - src/**/*Api.ts
+---
+
+# React / 业务页可读性约定
+
+实现或修改 `src` 下页面、组件、`*Api.ts` 时**默认遵守**。用户若明确要求性能优化或沿用既有 hook 风格，再局部例外并注明原因。
+
+## 1. UI：少用 `useCallback` / `useMemo`
+
+- **默认不写** `useCallback`、`useMemo`。
+- **仅当**传给 `React.memo` 子组件、或必须作为 `useEffect` 依赖且无法内联时，才提取。
+- 事件处理写在组件内普通函数，或 `actionsRender` / `columns.render` 附近；避免为每个按钮单独包一层 `useCallback`。
+
+```tsx
+// ❌ 过度包装
+const onClear = useCallback(() => { ... }, [deps]);
+
+// ✅ 同文件内普通函数 + 步骤注释
+async function handleClearSelection(rows: any[]) {
+  // 1. 校验  2. 调 API  3. refreshTable
+  ...
+}
+```
+
+## 2. 禁止 `useEffect` 串联业务
+
+- **禁止**：`useEffect` 里因 state A 变化去调接口 B、再 setState 触发 C（隐式调用链）。
+- **允许**：挂载拉配置、Modal `open` / `afterOpenChange` 拉数、按钮 `onClick` / `Modal.onOk` 里显式请求。
+- 向父组件注册回调：优先 `forwardRef` + `useImperativeHandle`，或父组件在操作成功后**显式**调用 ref；避免 `useEffect(() => onRegister?.(fn), [fn])` 反复注册。
+- 输入框取消后回显：优先 `key={\`${record.id}-${resetToken}\`}` 重置 `InputNumber`，避免 `useEffect` 同步本地 state。
+
+## 3. API 集中在 `*Api.ts`
+
+- 请求、列表合并、复杂业务计算放在 `services/*Api.ts`，**不在**列 render / Section 里重复写。
+- **何时抽象 / 封装 / 复用（L0–L3）**：遵守 [api-layering.md](api-layering.md)（团队真源 `guidelines/api-layering.md`）。
+- 文件顶部维护 **入口索引表**（约 5～10 行）：**用户场景 → export 函数名 → 主要接口 → 是否刷新哪些列表**。
+- 复杂 export 函数体开头用步骤注释：`// 1. …  2. …  3. refresh …`。
+- 若项目有 OpenSpec / 内部调用清单 md，长函数名与索引以该文档为准。
+
+## 4. 命名
+
+| 范围 | 风格 | 示例 |
+|------|------|------|
+| 单文件 / 单页面内 | 短、动词开头 | `clearSelection`、`refreshTables`、`openEditModal` |
+| 跨文件、对应设计文档条目 | 可与文档一致的长名 | 按项目约定 |
+| 禁止 | 无业务含义的抽象名 | `handleDataChange`、`processItems`、`resetState` |
+
+## 5. 一个用户动作 = 一个顶层函数
+
+- 按钮 / 工具栏 / 弹框确定：对应**一个**顶层 `async function`（或同文件内具名函数），不要用多层 `useCallback` 间接调用。
+- 函数开头 **3～5 行步骤注释**，再写实现。
+
+## 6. 与项目专用规则
+
+若业务仓库另有领域专用规则（如 `.cursor/rules/*`、OpenSpec interactions），**专用规则优先于本文件的泛化约定**。
+
+## 自检（改完扫一眼）
+
+- [ ] 新增 `useEffect` 是否仅为挂载 / Modal 打开 / 无更直观的 `key` 重置？
+- [ ] 能否删掉一半 `useCallback`/`useMemo` 而不改行为？
+- [ ] 用户动作能否从按钮名追到**一个**具名函数和步骤注释？
+- [ ] `*Api.ts` 顶部索引是否已更新？
