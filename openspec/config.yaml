@@ -89,15 +89,10 @@ rules:
     - State which apps/* dirs change and which stay read-only
     - Include gateway/nginx/compose/env var changes when adding routes or ports
     - Reference scaffold doc for new sub-apps; prefer copying inventory-front template
-    - Go changes: follow handler → service → repository; front changes: *Api.ts L1/L3 split
-    - Verification: list commands per app (pnpm dev, go test, docker compose)
+    - "Go changes: follow handler → service → repository; front changes: *Api.ts L1/L3 split"
+    - "Verification: list commands per app (pnpm dev, go test, docker compose)"
   tasks:
-    - Group tasks by app or infra layer; each task independently verifiable
-    - Checkbox format "- [ ]"; order: infra/gateway → backend → front → host integration → docs
-    - Cross-repo: note which app repo gets its own commit
-    - Do not combine unrelated refactors with feature tasks
-  apply:
-    - Read workspace-spec/spec-workflow.md and affected app README before coding
-    - One logical task at a time; run listed verify command before marking complete
-    - Update docs/WORKSPACE.md port table if ports change
-    - End implementation replies with「修改的文件」table when files changed (see CLAUDE.md)
+    - "Group tasks by app or infra layer; each task independently verifiable"
+    - 'Checkbox format "- [ ]"; order: infra/gateway → backend → front → host integration → docs'
+    - "Cross-repo: note which app repo gets its own commit"
+    - "Do not combine unrelated refactors with feature tasks"
