@@ -14,6 +14,8 @@
 | `apps/user-front/` | 用户中心子应用页面、调用后端的 `src/api`、Vite `proxy` 与 `VITE_API_BASE` |
 | `apps/hello-front/` | 试验子应用；与父应用联调时保持端口与父应用环境变量一致 |
 | `apps/user-backend/` | Go API、数据库模型、JWT、Swagger 生成物 |
+| `apps/inventory-front/` | 库存子应用（React 19），Host 无界 entry `/micro/inventory/` |
+| `apps/inventory-backend/` | 库存 API（Go），网关路径 `/api/inventory/v1` |
 | `vendor/wujie/` | **官方上游克隆**：优先只读；若需改示例，先考虑是否应在自己业务仓库改 |
 
 ## 工具链约定
@@ -29,13 +31,14 @@
 ## Docker
 
 - 编排文件：`infra/docker/docker-compose.yml`，已内含 `gateway` 服务（同域入口，唯一对外端口 80）。
-- 浏览器只访问 `http://k-project.com/`（hosts: `127.0.0.1 k-project.com`），不再用多端口 `localhost:xxxx` 入口。
+- 浏览器只访问 `https://k-project.com/`（hosts: `127.0.0.1 k-project.com`；TLS 见 `infra/gateway/gen-certs.sh`），不再用多端口 `localhost:xxxx` 入口。
 - 父应用构建参数 `VITE_HELLO_FRONT_URL` / `VITE_USER_FRONT_URL` 默认是同源相对路径 `/micro/hello/`、`/micro/user/`；详见 `docs/DOCKER.md`、`docs/SINGLE_DOMAIN.md`。
 - 子应用 nginx 与后端 Go 中**不再**配 CORS / 反向代理；同源方案下都不需要。
 
 ## Cursor Skills（AI 自动加载范围）
 
 - **工作区根** `k-project/.cursor/skills/`：以根目录打开工作区时，Agent 会按 description **自动**匹配并读取。
+- **子应用前端范本**：`.cursor/skills/k-project-subapp-front/`（目录结构、`config/routes`、wujie 路由桥）；各 `apps/*-front/.cursor/skills/k-project-subapp-front/` 为同 skill 的 app 特例摘要。
 - **子应用内**（如 `apps/user-backend/.cursor/skills/go-gin-gorm-service/`）：根工作区模式下**通常不会**进入自动 skill 列表；改该应用时 Agent 应 **主动 Read** 该路径，或把 skill **复制/摘要到** 根目录 `.cursor/skills/`（推荐对跨仓常用约定这样做）。
 - **`~/.cursor/skills-cursor/`**：Cursor 内置 skill，与业务仓库无关。
 
