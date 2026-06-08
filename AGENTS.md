@@ -2,7 +2,10 @@
 
 ## OpenSpec
 
-- 工作流：[workspace-spec/spec-workflow.md](workspace-spec/spec-workflow.md)
+**默认流程**：Superpowers brainstorming（聊需求）→ `/opsx-propose`（工件 + tasks）→ `/opsx-apply`（实现）。不用 Superpowers `writing-plans`；清单以 `tasks.md` 为准。
+
+- 三阶段说明：[workspace-spec/spec-workflow.md#标准流程superpowers-聊需求--openspec-执行](workspace-spec/spec-workflow.md#标准流程superpowers-聊需求--openspec-执行)
+- 需求讨论稿：`docs/superpowers/specs/`
 - 技术硬规则：[workspace-spec/TECH_CLAUDE.md](workspace-spec/TECH_CLAUDE.md)
 - AI 上下文：[openspec/config.yaml](openspec/config.yaml)
 - 变更目录：`openspec/changes/{kebab-case-en}/`

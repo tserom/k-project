@@ -37,9 +37,11 @@ docker compose -f infra/docker/docker-compose.yml up --build
 
 ## OpenSpec + Cursor
 
-- 开需求流程：[workspace-spec/spec-workflow.md](./workspace-spec/spec-workflow.md)
+**推荐**：Superpowers 聊需求定方案 → `/opsx-propose` 出工件与 tasks → `/opsx-apply` 实现。
+
+- 完整三阶段流程：[workspace-spec/spec-workflow.md](./workspace-spec/spec-workflow.md#标准流程superpowers-聊需求--openspec-执行)
+- 需求讨论稿目录：`docs/superpowers/specs/`（OpenSpec 清单在 `openspec/changes/`）
 - 技术规范索引：[workspace-spec/TECH_CLAUDE.md](./workspace-spec/TECH_CLAUDE.md)
-- 变更记录：`openspec/changes/`
 - Cursor 命令：`/opsx-propose` · `/opsx-apply` · `/opsx-archive`
 
 ## 给 AI / 协作者

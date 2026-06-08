@@ -2,6 +2,99 @@
 
 适用：**个人 / 小团队**，在 k-project 根目录用 Cursor + OpenSpec 做需求。技术入口见 [TECH_CLAUDE.md](./TECH_CLAUDE.md)。
 
+**推荐总流程**：Superpowers 聊需求定方案 → OpenSpec 出工件与清单 → `/opsx-apply` 落地（见下节）。
+
+---
+
+## 标准流程：Superpowers 聊需求 → OpenSpec 执行
+
+三阶段分工明确：**Superpowers 负责想清楚**，**OpenSpec 负责可追踪工件与实现**，不在中间再跑 Superpowers `writing-plans`（OpenSpec 的 `tasks.md` 取代它）。
+
+```mermaid
+flowchart LR
+  A[阶段1 聊需求] --> B[阶段2 出工件]
+  B --> C[阶段3 实现]
+  C --> D[归档]
+
+  A -->|brainstorming| A1["docs/superpowers/specs/…-design.md"]
+  B -->|/opsx-propose| B1["openspec/changes/{kebab}/"]
+  C -->|/opsx-apply| C1["apps/* 代码"]
+  D -->|/opsx-archive| D1["change 归档"]
+```
+
+### 阶段 1：聊需求（Superpowers brainstorming）
+
+**你怎么开**：直接说想做什么，例如「我想给库存加出入库单导出」。
+
+**Agent 怎么做**（`superpowers:brainstorming`）：
+
+- 一次只问一个澄清问题，必要时给 2～3 种方案与取舍
+- 分段呈现设计，**你点头后再往下**
+- **不写代码、不建 change、不跑 `/opsx-propose`**
+- 定稿后写入：`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+- 在 change README 或对话里记下：**涉及哪些 `apps/*` / `infra/*`**
+
+**阶段 1 结束标志**：你说「方案 OK」「可以进 OpenSpec」之类。
+
+### 阶段 2：出方案与清单（OpenSpec propose）
+
+**你怎么开**：
+
+```
+/opsx-propose <kebab-case-en>
+```
+
+或：「按刚才的方案生成 OpenSpec」。
+
+**Agent 怎么做**（`openspec-propose`）：
+
+- 读取阶段 1 的设计稿 + 已确认的 apps 范围
+- `openspec new change` → 依次生成 `proposal.md` → `specs/**` → `design.md` → `tasks.md`
+- `tasks.md` 即**可勾选实现清单**（按 app / infra 分组）
+
+**与 Superpowers 的边界**：
+
+| 产出 | 路径 | 谁写 |
+|------|------|------|
+| 需求讨论稿（人读） | `docs/superpowers/specs/` | brainstorming |
+| 正式工件 + 任务清单 | `openspec/changes/{kebab}/` | `/opsx-propose` |
+| ~~实施计划~~ | ~~`docs/superpowers/plans/`~~ | **不用**；由 `tasks.md` 替代 |
+
+**阶段 2 结束标志**：`openspec status` 显示 apply 所需工件齐全；Agent 提示「可 `/opsx-apply`」。
+
+### 阶段 3：实现（OpenSpec apply）
+
+**你怎么开**：
+
+```
+/opsx-apply
+```
+
+或 `/opsx-apply <change-name>`。
+
+**Agent 怎么做**（`openspec-apply-change`）：
+
+- 读 change 下全部上下文，按 `tasks.md` 逐项实现
+- 每完成一项：`- [ ]` → `- [x]`
+- 业务代码在对应 `apps/*` 仓库 commit；OpenSpec 更新在根仓库 commit
+
+**阶段 3 结束**：`/opsx-archive` 归档。
+
+### 一句话口令（复制即用）
+
+| 意图 | 你说 |
+|------|------|
+| 新开需求 | 「我想做 …」（走 brainstorming） |
+| 方案定了 | 「方案 OK，生成 OpenSpec」或 `/opsx-propose …` |
+| 开始写代码 | `/opsx-apply` |
+| 做完了 | `/opsx-archive` |
+| 已有 tasks，跳过聊需求 | `/opsx-apply`（见下节「直接 apply」） |
+
+### 何时不用阶段 1
+
+- 小改、路径明确、无方案分歧：可直接 `/opsx-propose` 或甚至 `/opsx-apply`（已有 tasks）
+- 纯探索、不写工件：用 `/opsx-explore`
+
 ---
 
 ## 0. 快速回答模式

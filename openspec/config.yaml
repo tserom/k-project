@@ -48,6 +48,8 @@ context: |
   - inventory-backend 对齐 user-backend 模式，独立 MySQL 库 `inventory`
 
   ## OpenSpec Workflow
+  - 默认三阶段：Superpowers brainstorming（需求稿 `docs/superpowers/specs/`）→ `/opsx-propose` → `/opsx-apply`
+  - 不用 Superpowers `writing-plans`；实施清单以 `openspec/changes/{kebab}/tasks.md` 为准
   - 变更目录：`openspec/changes/{kebab-case-en}/`（小写 kebab，不用中文）
   - 工件：proposal → specs → design → tasks；详见 `workspace-spec/spec-workflow.md`
   - Cursor：`/opsx-propose` 创建工件，`/opsx-apply` 按 tasks 实现，`/opsx-archive` 归档
@@ -73,6 +75,7 @@ context: |
 # Per-artifact rules
 rules:
   proposal:
+    - If user completed Superpowers brainstorming, read docs/superpowers/specs/*-design.md first; do not re-debate settled decisions
     - Keep proposals scoped to a single change; include Non-goals when scope is ambiguous
     - Testable behaviors MUST use WHEN/THEN format
     - List impacted apps/* directories and gateway paths explicitly

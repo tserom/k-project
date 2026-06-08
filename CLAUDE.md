@@ -5,7 +5,9 @@
 
 ## OpenSpec（Cursor 工作流）
 
-- **开需求 / 出工件**：读 [workspace-spec/spec-workflow.md](workspace-spec/spec-workflow.md)
+**默认**：Superpowers 聊需求（`docs/superpowers/specs/`）→ `/opsx-propose` → `/opsx-apply`；不用 Superpowers `writing-plans`。
+
+- **三阶段流程**：[workspace-spec/spec-workflow.md#标准流程superpowers-聊需求--openspec-执行](workspace-spec/spec-workflow.md#标准流程superpowers-聊需求--openspec-执行)
 - **出 design / tasks 或 apply 前**：读 [workspace-spec/TECH_CLAUDE.md](workspace-spec/TECH_CLAUDE.md)
 - **AI 上下文与 artifact 规则**： [openspec/config.yaml](openspec/config.yaml)
 - **Cursor 命令**：`/opsx-propose` → `/opsx-apply` → `/opsx-archive`（定义见 `.cursor/commands/`）
