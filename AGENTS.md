@@ -1,5 +1,13 @@
 # AGENTS.md — k-project 工作区（给 AI 用）
 
+## OpenSpec
+
+- 工作流：[workspace-spec/spec-workflow.md](workspace-spec/spec-workflow.md)
+- 技术硬规则：[workspace-spec/TECH_CLAUDE.md](workspace-spec/TECH_CLAUDE.md)
+- AI 上下文：[openspec/config.yaml](openspec/config.yaml)
+- 变更目录：`openspec/changes/{kebab-case-en}/`
+- Cursor：`/opsx-propose` · `/opsx-apply` · `/opsx-archive`
+
 ## 工作区性质
 
 - 路径 `k-project/` 是**工作区根**，业务代码在 **`apps/`** 下；`vendor/wujie` 为上游参考。
@@ -46,6 +54,8 @@
 
 ## 文档索引
 
+- `workspace-spec/spec-workflow.md` — OpenSpec 开 change、多仓库 commit
+- `workspace-spec/TECH_CLAUDE.md` — 架构/前后端硬规则索引
 - `docs/WORKSPACE.md` — 端口、仓库、依赖图
 - `docs/NAVIGATION_CONFIG.md` — Host 导航 DB/API/管理页方案（v1 已实现；代码在各 `apps/*` 仓库）
 - `docs/MICROFRONTEND.md` — wujie 父子关系与 env

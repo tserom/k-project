@@ -35,6 +35,13 @@ docker compose -f infra/docker/docker-compose.yml up --build
 
 首次使用请先阅读 `infra/docker/README.md` 中的环境变量与局限说明。
 
+## OpenSpec + Cursor
+
+- 开需求流程：[workspace-spec/spec-workflow.md](./workspace-spec/spec-workflow.md)
+- 技术规范索引：[workspace-spec/TECH_CLAUDE.md](./workspace-spec/TECH_CLAUDE.md)
+- 变更记录：`openspec/changes/`
+- Cursor 命令：`/opsx-propose` · `/opsx-apply` · `/opsx-archive`
+
 ## 给 AI / 协作者
 
 - 工作区总览与编辑边界：[AGENTS.md](./AGENTS.md)

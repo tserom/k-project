@@ -15,6 +15,9 @@ description: >-
 
 | 文档 | 内容 |
 |------|------|
+| `workspace-spec/spec-workflow.md` | OpenSpec 开 change、Cursor 命令 |
+| `workspace-spec/TECH_CLAUDE.md` | 技术硬规则索引 |
+| `openspec/config.yaml` | OpenSpec AI 上下文 |
 | `docs/NAVIGATION_CONFIG.md` | Host 导航 DB/API、entryUrl 仅 env、admin 写权限 |
 | `docs/WORKSPACE.md` | 端口唯一信息源 |
 | `docs/MICROFRONTEND.md` | wujie 父子关系与 env |

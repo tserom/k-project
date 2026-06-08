@@ -3,6 +3,13 @@
 > 项目上下文维护在本文件；团队通用规范由 [team-agent-standards](https://github.com/tserom/team-agent-standards) 生成并合并于此。
 > 团队规范修改请改 team-agent-standards 仓库 `guidelines/*.md` 后 `python3 scripts/build.py claude`，再同步到本项目。
 
+## OpenSpec（Cursor 工作流）
+
+- **开需求 / 出工件**：读 [workspace-spec/spec-workflow.md](workspace-spec/spec-workflow.md)
+- **出 design / tasks 或 apply 前**：读 [workspace-spec/TECH_CLAUDE.md](workspace-spec/TECH_CLAUDE.md)
+- **AI 上下文与 artifact 规则**： [openspec/config.yaml](openspec/config.yaml)
+- **Cursor 命令**：`/opsx-propose` → `/opsx-apply` → `/opsx-archive`（定义见 `.cursor/commands/`）
+
 ## 工作区性质
 
 - 路径 `k-project/` 是**工作区根**，业务代码在 **`apps/`** 下；`vendor/wujie` 为上游参考。

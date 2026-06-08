@@ -1,20 +1,100 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+# Project context — shown to AI when creating OpenSpec artifacts
+context: |
+  ## Workspace
+  k-project：微前端（wujie）+ Go 全栈工作区。业务代码在 `apps/` 下；`vendor/wujie` 为上游参考（优先只读）。
+  根目录聚合文档、OpenSpec、Docker/网关；各 `apps/*` 多为**独立 Git 仓库**。改哪个应用，进入对应子目录操作。
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  ## Apps
+  | 目录 | 角色 | 技术栈 | 网关/API |
+  |------|------|--------|----------|
+  | apps/host | 父应用壳 | React 17 + Vite + wujie-react | `/` |
+  | apps/user-front | 用户中心子应用 | React 17 + TS + antd 4 | `/micro/user/` · `/api/v1/` |
+  | apps/hello-front | 试验子应用 | React 17 + JSX | `/micro/hello/` |
+  | apps/inventory-front | 库存子应用（推荐复制范本） | React 19 + TS + antd 5 | `/micro/inventory/` |
+  | apps/user-backend | 用户/导航 API | Go 1.22 + Gin + GORM + MySQL | `/api/v1/` |
+  | apps/inventory-backend | 库存 API | Go 1.22 + Gin + GORM + MySQL | `/api/inventory/v1/` |
+  | infra/gateway | 同源入口 nginx | — | `https://k-project.com`（80→443） |
+  | vendor/k-query-table 等 | 内部组件包 | React/TS | 被 front 引用 |
+
+  ## Call Chain
+  浏览器 → gateway（同源）→ host（壳层/导航/页签）→ wujie iframe → 子应用 front → `/api/*` → 对应 backend。
+  子应用**不**直连其它 backend 的域名；开发多端口时 API 走 gateway 或 Vite proxy，避免 CORS。
+
+  ## Auth & Navigation
+  - Host 与子应用共用 token 键：`localStorage['user-front:access-token']`（与 user-front 保持一致）
+  - 导航：`GET /api/v1/navigation`（user-backend）；entryUrl 由后端 env merge
+  - 写导航：`PUT /api/v1/navigation` 需 JWT + role=admin
+
+  ## Ports（唯一信息源）
+  见 `docs/WORKSPACE.md`：host 8100 · hello 8101 · user 8102 · inventory 8103 · user-api 8500 · inventory-api 8501 · gateway 443。
+  改端口须同步：端口表 → Vite → docker nginx → gateway upstream → compose → host `VITE_*`。
+
+  ## Toolchain
+  - 前端（host/user-front）：Node 20.19.x + pnpm
+  - 后端：Go 1.22.x；配置 `.env`（勿提交）；`go test ./...` + `make lint`
+  - OpenSpec CLI：`openspec new change` / `status` / `instructions`
+
+  ## Frontend Conventions
+  - 子应用结构范本：`apps/inventory-front`（新子应用优先复制）；用户/登录深度集成用 `user-front`
+  - API 集中在 `src/services/*Api.ts` 或 `src/api/`；分层 L0–L3（见 CLAUDE.md）
+  - 默认少用 useCallback/useMemo；禁止 useEffect 串联业务；见 CLAUDE.md「React / 业务页可读性约定」
+  - 新增子应用清单：`docs/SCAFFOLD_MICROFRONTEND.md`
+
+  ## Backend Conventions（Go）
+  - 分层：`cmd/server` → `internal/router` → `handler` → `service` → `repository` → `model`
+  - JWT 中间件保护写操作；密码 bcrypt；详见 `apps/user-backend/.cursor/skills/go-gin-gorm-service/SKILL.md`
+  - inventory-backend 对齐 user-backend 模式，独立 MySQL 库 `inventory`
+
+  ## OpenSpec Workflow
+  - 变更目录：`openspec/changes/{kebab-case-en}/`（小写 kebab，不用中文）
+  - 工件：proposal → specs → design → tasks；详见 `workspace-spec/spec-workflow.md`
+  - Cursor：`/opsx-propose` 创建工件，`/opsx-apply` 按 tasks 实现，`/opsx-archive` 归档
+  - 跨 app 需求：同一 change 目录写总览；实现时分别进入各 app 仓库 commit
+
+  ## Critical Rules (Do NOT)
+  - 在 vendor/wujie 改业务逻辑（应改 apps/host 或子应用）
+  - 只改一个服务的端口而不同步 WORKSPACE / gateway / compose
+  - 子应用前端直连 `localhost:850x` 跨域联调（应走 gateway 或 proxy）
+  - 提交 `.env`、密钥、MYSQL 明文文件
+  - Agent 自动 merge/push 到 main/develop（只 push feature 分支 + 开 MR/PR 草稿）
+  - 无结构地把多个 apps 混在一个大改里而不在 design/tasks 标明边界
+
+  ## Docs Index
+  - docs/WORKSPACE.md — 端口、仓库、依赖图
+  - docs/MICROFRONTEND.md — wujie 拼法
+  - docs/SCAFFOLD_MICROFRONTEND.md — 新增子应用
+  - docs/SINGLE_DOMAIN.md — 同域 k-project.com
+  - docs/NAVIGATION_CONFIG.md — 导航 DB/API
+  - AGENTS.md / CLAUDE.md — AI 总入口
+  - workspace-spec/ — OpenSpec 与落地硬规则
+
+# Per-artifact rules
+rules:
+  proposal:
+    - Keep proposals scoped to a single change; include Non-goals when scope is ambiguous
+    - Testable behaviors MUST use WHEN/THEN format
+    - List impacted apps/* directories and gateway paths explicitly
+    - Reference existing capabilities in openspec/changes/ before inventing new patterns
+  specs:
+    - Use GIVEN/WHEN/THEN for all scenarios
+    - Split specs by capability (e.g. *-api / *-ui / *-integration) when crossing front + backend
+    - Cover happy path, edge cases, and error cases
+    - Express expected behavior, not implementation; name HTTP paths and UI routes when relevant
+  design:
+    - State which apps/* dirs change and which stay read-only
+    - Include gateway/nginx/compose/env var changes when adding routes or ports
+    - Reference scaffold doc for new sub-apps; prefer copying inventory-front template
+    - Go changes: follow handler → service → repository; front changes: *Api.ts L1/L3 split
+    - Verification: list commands per app (pnpm dev, go test, docker compose)
+  tasks:
+    - Group tasks by app or infra layer; each task independently verifiable
+    - Checkbox format "- [ ]"; order: infra/gateway → backend → front → host integration → docs
+    - Cross-repo: note which app repo gets its own commit
+    - Do not combine unrelated refactors with feature tasks
+  apply:
+    - Read workspace-spec/spec-workflow.md and affected app README before coding
+    - One logical task at a time; run listed verify command before marking complete
+    - Update docs/WORKSPACE.md port table if ports change
+    - End implementation replies with「修改的文件」table when files changed (see CLAUDE.md)

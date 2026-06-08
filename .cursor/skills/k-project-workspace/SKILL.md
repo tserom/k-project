@@ -15,6 +15,9 @@ description: >-
 
 | 文档 | 内容 |
 |------|------|
+| [`workspace-spec/spec-workflow.md`](../../../workspace-spec/spec-workflow.md) | OpenSpec 开 change、Cursor 命令 |
+| [`workspace-spec/TECH_CLAUDE.md`](../../../workspace-spec/TECH_CLAUDE.md) | 技术硬规则索引 |
+| [`openspec/config.yaml`](../../../openspec/config.yaml) | OpenSpec AI 上下文 |
 | [`docs/NAVIGATION_CONFIG.md`](../../../docs/NAVIGATION_CONFIG.md) | Host 导航 DB/API、entryUrl 仅 env、admin 写权限 |
 | [`docs/WORKSPACE.md`](../../../docs/WORKSPACE.md) | 端口唯一信息源 |
 | [`AGENTS.md`](../../../AGENTS.md) | 各 `apps/*` 职责、skill 加载说明 |
