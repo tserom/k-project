@@ -140,13 +140,8 @@ VITE_API_BASE=/api/inventory
   "microAppKey": "inventory",
   "subAppBusName": "inventory-front",
   "routes": [
-    { "key": "dashboard", "path": "/", "label": "概览" },
-    { "key": "products", "path": "/products", "label": "商品" },
-    { "key": "warehouses", "path": "/warehouses", "label": "仓库" },
-    { "key": "stock", "path": "/stock", "label": "库存" },
-    { "key": "movements", "path": "/movements", "label": "流水" },
-    { "key": "move-in", "path": "/movements/in", "label": "入库" },
-    { "key": "move-out", "path": "/movements/out", "label": "出库" }
+    { "key": "transactions", "path": "/transactions", "label": "出入库单" },
+    { "key": "sales-deliveries", "path": "/sales-deliveries", "label": "销售发货单" }
   ]
 }
 ```
@@ -427,21 +422,20 @@ erDiagram
 
 ---
 
-## 6. 前端页面（v1）
+## 6. 前端页面（当前）
 
 | 路由 | 页面 | 功能 |
 |------|------|------|
 | `/login` | 登录 | JWT 存 `localStorage`（key: `ims_token`） |
-| `/` | 仪表盘 | 低库存 SKU 数、今日出入库笔数 |
-| `/products` | 商品列表 | 搜索、分页、新建/编辑（admin） |
-| `/warehouses` | 仓库 | 列表与维护 |
-| `/stock` | 库存查询 | 按仓/SKU 筛选 |
-| `/movements` | 流水 | 时间范围筛选 |
-| `/movements/in` | 入库 | 表单 |
-| `/movements/out` | 出库 | 表单 + 可用库存展示 |
-| `/sales-deliveries` | 销售发货单 | 列表、筛选、新建/查看/编辑 |
+| `/transactions` | 出入库单 | AG Grid 列表、筛选、新增/编辑、Excel 导出 |
+| `/sales-deliveries` | 销售发货单 | 列表、筛选、新建/查看/编辑、Excel 导出 |
+| `/sales-deliveries/new` | 新建销售发货单 | 表头 + 多行明细录入 |
+| `/sales-deliveries/:id` | 销售发货单详情 | 只读查看 |
+| `/sales-deliveries/:id/edit` | 编辑销售发货单 | 全量替换明细行 |
 
-**布局**：左侧菜单 + 顶栏用户；未登录跳转 `/login`。
+> 早期设计中的 `/products`、`/warehouses`、`/stock`、`/movements` 页面暂未作为当前库存前端导航入口；对应后端 API 仍保留，后续若恢复页面需重新接入路由和菜单。
+
+**布局**：顶部导航；未登录跳转 `/login`。
 
 **权限**：前端按 `me.role` 隐藏 admin 菜单；真正的权限以后端为准。
 
