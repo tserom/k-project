@@ -49,6 +49,7 @@
 - `docs/WORKSPACE.md` — 端口、仓库、依赖图
 - `docs/NAVIGATION_CONFIG.md` — Host 导航 DB/API/管理页方案（v1 已实现；代码在各 `apps/*` 仓库）
 - `docs/MICROFRONTEND.md` — wujie 父子关系与 env
+- `docs/SCAFFOLD_MICROFRONTEND.md` — 新增子应用快速搭建清单
 - `docs/DOCKER.md` — 容器化约定与排错
 - `docs/reference-wujie-upstream.md` — `vendor/wujie/` 说明
 - `docs/REPO_LAYOUT.md` — 物理目录与 Git 说明

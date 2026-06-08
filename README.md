@@ -12,7 +12,7 @@
 | [apps/user-backend](./apps/user-backend/) | **后端**：Go + Gin + GORM + MySQL + JWT | 是 |
 | [vendor/wujie](./vendor/wujie/) | **上游参考**：无界官方源码与示例（React/Vue），以阅读、对照为主 | 是 |
 
-更细的端口、环境变量与依赖关系见 [docs/WORKSPACE.md](./docs/WORKSPACE.md)。微前端如何拼在一起见 [docs/MICROFRONTEND.md](./docs/MICROFRONTEND.md)。**单域名 / 同源入口** 设计见 [docs/SINGLE_DOMAIN.md](./docs/SINGLE_DOMAIN.md)。目录搬迁说明见 [docs/REPO_LAYOUT.md](./docs/REPO_LAYOUT.md)。
+更细的端口、环境变量与依赖关系见 [docs/WORKSPACE.md](./docs/WORKSPACE.md)。微前端如何拼在一起见 [docs/MICROFRONTEND.md](./docs/MICROFRONTEND.md)。**新增子应用快速搭建**见 [docs/SCAFFOLD_MICROFRONTEND.md](./docs/SCAFFOLD_MICROFRONTEND.md)。**单域名 / 同源入口** 设计见 [docs/SINGLE_DOMAIN.md](./docs/SINGLE_DOMAIN.md)。目录搬迁说明见 [docs/REPO_LAYOUT.md](./docs/REPO_LAYOUT.md)。
 
 ## 端口名单
 

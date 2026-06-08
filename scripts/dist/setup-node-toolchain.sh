@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
 # 独立分发版：单文件，不依赖 k-project 仓库。
-# 把本文件发给同事，或放到可 curl 的地址即可。
+# macOS / Linux 用本文件；Windows 用同目录 setup-node-toolchain.ps1
+# Agent 操作说明见 AGENT-node-toolchain.md
 #
 # 用法:
 #   bash setup-node-toolchain.sh           # 安装并对齐

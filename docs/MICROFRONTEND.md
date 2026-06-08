@@ -17,6 +17,8 @@
 
 改端口须同步：端口表 → 各服务 nginx / Vite → 网关 upstream → 父应用 `VITE_*`。
 
+**新增子应用**：按步骤清单见 [SCAFFOLD_MICROFRONTEND.md](./SCAFFOLD_MICROFRONTEND.md)。
+
 ## Host 壳层（欢迎页与用户菜单）
 
 - 访问根路径 `/`（无打开的微前端页签）时展示 **中台欢迎页**，不再自动跳进第一个子应用。
