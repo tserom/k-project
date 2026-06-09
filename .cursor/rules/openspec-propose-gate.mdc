@@ -1,0 +1,21 @@
+---
+description: Ask whether to use OpenSpec propose for cross-app or multi-step changes
+alwaysApply: true
+---
+
+# OpenSpec Propose Gate
+
+When a request is cross-frontend/backend, spans multiple `apps/*`, or looks like a multi-step migration, ask the user whether to use OpenSpec before implementation.
+
+Default prompt:
+
+> This looks like a tracked change. Do you want me to run the Superpowers → OpenSpec flow and create an `openspec/changes/<name>/` proposal first?
+
+Use OpenSpec by default when the user wants:
+
+- a Superpowers brainstorming → OpenSpec propose → apply closed loop
+- a change that touches both frontend and backend contracts
+- a multi-resource API migration
+- a traceable task checklist
+
+Small single-file fixes, tiny endpoint tweaks, and pure docs/rules edits can proceed without OpenSpec unless the user asks for it.

@@ -1,0 +1,18 @@
+---
+description: Use nvm to switch Node versions before running frontend commands
+alwaysApply: true
+---
+
+# Node Version With nvm
+
+When frontend commands fail or may fail because of the active Node.js version, use `nvm` to switch Node first.
+
+Preferred command:
+
+```bash
+nvm use 20
+```
+
+In this workspace, `nvm use 20` may switch to Node `v20.16.0` on the user's machine. After switching, rerun the intended command such as `pnpm install`, `pnpm typecheck`, `pnpm build`, or `pnpm dev`.
+
+If a package declares a stricter engine range than the selected Node version, report the mismatch clearly instead of silently changing dependency or engine settings.
