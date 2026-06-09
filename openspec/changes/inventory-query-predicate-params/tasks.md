@@ -20,10 +20,10 @@
 
 ## 4. Follow-up Inventory Resources
 
-- [ ] 4.1 Decide whether product list should migrate from `enabled` / `q` to documented `qp-*` predicates while keeping compatibility
-- [ ] 4.2 Decide whether inventory transaction list/export should migrate `type`, `party_name`, and date filters to API-field `qp-*` names
-- [ ] 4.3 Decide whether sales delivery list/export should migrate `party_b_name` and date filters to API-field `qp-*` names
-- [ ] 4.4 Add per-resource tests before each follow-up migration
+- [x] 4.1 Migrate product list `enabled` to `qp-enabled-eq` (keep `q` for multi-field search; pagination uses `currentPage` / `pageSize`)
+- [x] 4.2 Migrate inventory transaction list/export to `qp-*` filters and `currentPage` / `pageSize` (no legacy params)
+- [x] 4.3 Migrate sales delivery list/export to `qp-*` filters and `currentPage` / `pageSize` (no legacy params)
+- [x] 4.4 Add per-resource tests for transaction and sales delivery filter parsers plus `parsePageQuery`
 
 ## 5. Cross-Repo Commit Notes
 
