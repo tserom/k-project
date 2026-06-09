@@ -1,0 +1,20 @@
+---
+description: Prefer the local team-agent-standards repository path for shared standards
+alwaysApply: true
+---
+
+# Team Agent Standards Path
+
+When working with shared team standards, reusable rules, long-form standards, or Cursor rule build outputs, prefer the local repository:
+
+`/Users/lingqirui/team-agent-standards`
+
+Use this path first for:
+
+- `guidelines/*.md` agent-facing rules
+- `docs/standards/*.md` human-readable standards
+- `docs/skills/**/SKILL.md` reusable workflow skills
+- `cursor-manifest.json` Cursor rule manifest entries
+- generated Cursor rules under `generated/cursor/rules/`
+
+Do not search broad filesystem locations before checking this repository. If the repository is missing or inaccessible, say so and ask for the updated path.
