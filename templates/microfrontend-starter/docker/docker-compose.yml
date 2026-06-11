@@ -1,0 +1,17 @@
+# 可选附录：同源网关部署示例（最简闭环不需要 Docker，直接看根 README 的 5 步）
+#
+# 使用前提：
+#   1. host/ 与 demo-front/ 各自执行 pnpm build 产出 dist/
+#   2. host 构建时把 .env 里 VITE_DEMO_FRONT_URL 改为同源相对路径 /micro/demo/
+#
+# 启动：docker compose -f docker/docker-compose.yml up
+# 访问：http://localhost:6180/
+services:
+  gateway:
+    image: nginx:1.27-alpine
+    ports:
+      - '6180:80'
+    volumes:
+      - ./gateway-nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../host/dist:/usr/share/nginx/host:ro
+      - ../demo-front/dist:/usr/share/nginx/demo:ro

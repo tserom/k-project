@@ -2,15 +2,31 @@
 
 本目录是**多个独立 Git 仓库**的物理聚合：父应用、子应用、后端各自维护版本与远程地址；根目录用文档与 Docker 编排把它们串成一套可运行的系统。
 
-## 目录一览
+## 目录地图（每个目录是干什么的）
+
+### 业务代码（apps/，多为独立 Git 仓库）
 
 | 路径 | 角色 | 独立 Git |
 |------|------|----------|
 | [apps/host](./apps/host/) | wujie 微前端**父应用**（React 17 + Vite + `wujie-react`） | 是 |
 | [apps/user-front](./apps/user-front/) | **子应用**：用户中心相关页面（React 17 + TS + Vite） | 是 |
 | [apps/hello-front](./apps/hello-front/) | **子应用**：试验用（曾用于验证不同 Node/React 与无界集成） | 否 |
-| [apps/user-backend](./apps/user-backend/) | **后端**：Go + Gin + GORM + MySQL + JWT | 是 |
-| [vendor/wujie](./vendor/wujie/) | **上游参考**：无界官方源码与示例（React/Vue），以阅读、对照为主 | 是 |
+| [apps/inventory-front](./apps/inventory-front/) | **子应用**：库存管理（React 19 + TS + antd 5，新子应用复制范本） | 是 |
+| [apps/user-backend](./apps/user-backend/) | **后端**：用户/导航 API（Go + Gin + GORM + MySQL + JWT） | 是 |
+| [apps/inventory-backend](./apps/inventory-backend/) | **后端**：库存 API（Go，网关路径 `/api/inventory/v1`） | 是 |
+
+### 工程化与文档（根 Git 仓库）
+
+| 路径 | 是干什么的 |
+|------|-----------|
+| [docs/](./docs/) | 运行手册与领域规格：端口表、微前端拼法、Docker、新增子应用清单等 |
+| [openspec/](./openspec/) | 需求变更追踪：每个 change 一个目录；**中文总索引**见 [openspec/changes/README.md](./openspec/changes/README.md) |
+| [workspace-spec/](./workspace-spec/) | 给 AI 的技术硬规则：OpenSpec 流程、架构边界、前后端编码约定 |
+| [templates/](./templates/) | 可整体复制的项目模板（微前端最简 starter） |
+| [infra/](./infra/) | Docker 编排与 nginx 网关（同源入口） |
+| [scripts/](./scripts/) | 工具链脚本；注意其中 Node 16 工具链只服务 `vendor/` 老组件库（见 [scripts/README.md](./scripts/README.md)） |
+| [vendor/](./vendor/) | 参考与内部组件库：`wujie`（官方上游，只读）、`k-query-table`（内部组件）、`sula`/`business-component`（老库参考）；`k-table`、`k-business-component` 为空目录待清理 |
+| `.cursor/` | Cursor 规则 / skills / 命令的**唯一真源**（已删除重复的 `.claude/`） |
 
 更细的端口、环境变量与依赖关系见 [docs/WORKSPACE.md](./docs/WORKSPACE.md)。微前端如何拼在一起见 [docs/MICROFRONTEND.md](./docs/MICROFRONTEND.md)。**新增子应用快速搭建**见 [docs/SCAFFOLD_MICROFRONTEND.md](./docs/SCAFFOLD_MICROFRONTEND.md)。**单域名 / 同源入口** 设计见 [docs/SINGLE_DOMAIN.md](./docs/SINGLE_DOMAIN.md)。目录搬迁说明见 [docs/REPO_LAYOUT.md](./docs/REPO_LAYOUT.md)。
 
@@ -41,7 +57,7 @@ docker compose -f infra/docker/docker-compose.yml up --build
 
 - 完整三阶段流程：[workspace-spec/spec-workflow.md](./workspace-spec/spec-workflow.md#标准流程superpowers-聊需求--openspec-执行)
 - 需求讨论稿目录：`docs/superpowers/specs/`（OpenSpec 清单在 `openspec/changes/`）
-- 技术规范索引：[workspace-spec/TECH_CLAUDE.md](./workspace-spec/TECH_CLAUDE.md)
+- 技术规范索引：[workspace-spec/tech-rules.md](./workspace-spec/tech-rules.md)
 - Cursor 命令：`/opsx-propose` · `/opsx-apply` · `/opsx-archive`
 
 ## 给 AI / 协作者

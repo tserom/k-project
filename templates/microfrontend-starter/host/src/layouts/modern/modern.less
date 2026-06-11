@@ -1,0 +1,333 @@
+/**
+ * modern 布局壳层样式：全部颜色/圆角/阴影引用 tokens.less 的 --host-m-* 变量。
+ * 想换观感优先改 tokens.less；想改结构再动本文件与 ModernLayout.jsx。
+ */
+
+.modern-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--host-m-bg);
+}
+
+.modern-layout > .ant-layout {
+  flex: 1;
+  min-height: 0;
+}
+
+.modern-layout__body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background: var(--host-m-bg);
+}
+
+.modern-layout__body > .ant-layout-sider {
+  flex-shrink: 0;
+}
+
+.modern-layout__body > .ant-layout {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* ---------- 顶栏：白底浅色 ---------- */
+.modern-layout .modern-layout__header.ant-layout-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: var(--host-m-header-h);
+  line-height: var(--host-m-header-h);
+  padding: 0 20px;
+  flex-shrink: 0;
+  background: var(--host-m-surface) !important;
+  border-bottom: 1px solid var(--host-m-border);
+  box-shadow: 0 1px 8px rgba(30, 36, 51, 0.04);
+}
+
+.modern-layout__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.modern-layout__brand-mark {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, var(--host-m-primary), var(--host-m-primary-strong));
+  box-shadow: 0 3px 10px var(--host-m-primary-soft);
+}
+
+.modern-layout__brand-text {
+  color: var(--host-m-text);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.modern-layout__top-menu.ant-menu {
+  flex: 1;
+  min-width: 0;
+  border-bottom: none !important;
+  background: transparent !important;
+  line-height: calc(var(--host-m-header-h) - 16px);
+
+  .ant-menu-item {
+    top: 0;
+    margin: 8px 4px !important;
+    padding: 0 14px;
+    height: calc(var(--host-m-header-h) - 16px);
+    line-height: calc(var(--host-m-header-h) - 16px);
+    border-radius: var(--host-m-radius-sm);
+    border-bottom: none !important;
+    color: var(--host-m-muted);
+    transition: background 0.2s ease, color 0.2s ease;
+
+    &::after {
+      display: none !important;
+    }
+
+    &:hover {
+      color: var(--host-m-primary);
+      background: var(--host-m-primary-soft);
+    }
+  }
+
+  .ant-menu-item-selected {
+    color: var(--host-m-primary) !important;
+    background: var(--host-m-primary-soft) !important;
+    font-weight: 600;
+  }
+}
+
+.modern-layout__top-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modern-layout__header-end {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* ---------- 侧栏 ---------- */
+.modern-layout__sider.ant-layout-sider {
+  display: flex !important;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--host-m-surface) !important;
+  border-right: 1px solid var(--host-m-border);
+}
+
+.modern-layout__sider .ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.modern-layout__sider-head {
+  flex-shrink: 0;
+  padding: 16px 18px 6px;
+  min-height: 26px;
+}
+
+.modern-layout__sider-app {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--host-m-muted);
+}
+
+.modern-layout__side-menu.ant-menu {
+  flex: 1;
+  border-right: none !important;
+  overflow: auto;
+  padding: 6px 10px;
+  background: transparent !important;
+
+  .ant-menu-item {
+    border-radius: var(--host-m-radius-sm);
+    margin: 3px 0;
+    height: 42px;
+    line-height: 42px;
+    color: var(--host-m-text);
+
+    &::after {
+      display: none;
+    }
+
+    &:hover {
+      color: var(--host-m-primary);
+      background: var(--host-m-primary-soft);
+    }
+  }
+
+  .ant-menu-item-selected {
+    background: var(--host-m-primary-soft) !important;
+    color: var(--host-m-primary) !important;
+    font-weight: 600;
+  }
+}
+
+.modern-layout__sider-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px;
+  padding: 20px 12px;
+  border-radius: var(--host-m-radius-sm);
+  border: 1px dashed var(--host-m-border);
+  background: var(--host-m-bg);
+  text-align: center;
+}
+
+.modern-layout__sider-empty-icon {
+  font-size: 22px;
+  color: var(--host-m-primary);
+  opacity: 0.45;
+}
+
+.modern-layout__sider-empty-text {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--host-m-muted);
+}
+
+.modern-layout__sider-footer {
+  flex-shrink: 0;
+  border-top: 1px solid var(--host-m-border);
+  padding: 8px 10px;
+}
+
+.modern-layout__sider-trigger {
+  color: var(--host-m-muted) !important;
+  border-radius: var(--host-m-radius-sm);
+
+  &:hover {
+    color: var(--host-m-primary) !important;
+    background: var(--host-m-primary-soft) !important;
+  }
+}
+
+/* ---------- 内容区 ---------- */
+.modern-layout__inner {
+  background: var(--host-m-bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.modern-layout .modern-layout__content.ant-layout-content {
+  margin: 18px 20px;
+  padding: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+/* ---------- 内容区公共件在 modern 下的覆盖 ---------- */
+.modern-layout .micro-workspace__panel {
+  background: var(--host-m-surface);
+  border-color: var(--host-m-border);
+  border-radius: var(--host-m-radius);
+  box-shadow: var(--host-m-shadow);
+}
+
+.modern-layout .micro-workspace__panel--welcome {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+.modern-layout .micro-workspace__tabs .ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--host-m-primary);
+}
+
+.modern-layout .micro-workspace__nav-alert {
+  border-radius: var(--host-m-radius-sm);
+}
+
+.modern-layout .micro-workspace__wujie-host {
+  border-color: var(--host-m-border);
+  background: var(--host-m-bg);
+  border-radius: var(--host-m-radius-sm);
+}
+
+/* ---------- 顶栏用户菜单（modern：白底配深色文字） ---------- */
+.modern-layout .host-user-menu--guest {
+  display: flex;
+  align-items: center;
+}
+
+.modern-layout .host-user-menu__login-btn {
+  color: var(--host-m-text) !important;
+  font-weight: 500;
+  border-radius: var(--host-m-radius-sm);
+  height: 36px;
+  padding: 0 12px !important;
+
+  &:hover {
+    background: var(--host-m-primary-soft) !important;
+    color: var(--host-m-primary) !important;
+  }
+}
+
+.modern-layout .host-user-menu--auth {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px 4px 4px;
+  border: 1px solid var(--host-m-border);
+  border-radius: 999px;
+  background: var(--host-m-bg);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    background: var(--host-m-primary-soft);
+    border-color: var(--host-m-primary);
+  }
+}
+
+.modern-layout .host-user-menu__avatar {
+  background: linear-gradient(135deg, var(--host-m-primary), var(--host-m-primary-strong)) !important;
+  color: #fff !important;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.modern-layout .host-user-menu__name {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--host-m-text);
+}
+
+.modern-layout .host-user-menu__caret {
+  font-size: 10px;
+  color: var(--host-m-muted);
+}

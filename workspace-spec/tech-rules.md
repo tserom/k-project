@@ -1,6 +1,6 @@
-# k-project 技术规范入口（TECH_CLAUDE）
+# k-project 技术规范入口（tech-rules）
 
-OpenSpec **出 design / tasks 或 apply 实现前**读本文。AI 总入口仍是根目录 [CLAUDE.md](../CLAUDE.md) 与 [AGENTS.md](../AGENTS.md)。
+OpenSpec **出 design / tasks 或 apply 实现前**读本文。AI 总入口是根目录 [AGENTS.md](../AGENTS.md)。
 
 ## 规范索引
 

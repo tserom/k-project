@@ -38,8 +38,8 @@ context: |
 
   ## Frontend Conventions
   - 子应用结构范本：`apps/inventory-front`（新子应用优先复制）；用户/登录深度集成用 `user-front`
-  - API 集中在 `src/services/*Api.ts` 或 `src/api/`；分层 L0–L3（见 CLAUDE.md）
-  - 默认少用 useCallback/useMemo；禁止 useEffect 串联业务；见 CLAUDE.md「React / 业务页可读性约定」
+  - API 集中在 `src/services/*Api.ts` 或 `src/api/`；分层 L0–L3（见 `.cursor/rules/api-layering-decision.mdc`）
+  - 默认少用 useCallback/useMemo；禁止 useEffect 串联业务；见 `.cursor/rules/react-readability-conventions.mdc`
   - 新增子应用清单：`docs/SCAFFOLD_MICROFRONTEND.md`
 
   ## Backend Conventions（Go）
@@ -69,30 +69,33 @@ context: |
   - docs/SCAFFOLD_MICROFRONTEND.md — 新增子应用
   - docs/SINGLE_DOMAIN.md — 同域 k-project.com
   - docs/NAVIGATION_CONFIG.md — 导航 DB/API
-  - AGENTS.md / CLAUDE.md — AI 总入口
+  - AGENTS.md — AI 总入口（唯一）
   - workspace-spec/ — OpenSpec 与落地硬规则
 
 # Per-artifact rules
+# 语言约定：所有工件（proposal/specs/design/tasks）正文一律**中文为主**；
+# GIVEN/WHEN/THEN、Requirement、SHALL 等结构关键词保留英文；目录名保持英文 kebab-case。
 rules:
   proposal:
-    - If user completed Superpowers brainstorming, read docs/superpowers/specs/*-design.md first; do not re-debate settled decisions
-    - Keep proposals scoped to a single change; include Non-goals when scope is ambiguous
-    - Testable behaviors MUST use WHEN/THEN format
-    - List impacted apps/* directories and gateway paths explicitly
-    - Reference existing capabilities in openspec/changes/ before inventing new patterns
+    - 正文用中文写；若用户已完成 Superpowers brainstorming，先读 docs/superpowers/specs/*-design.md，不要重新争论已定决策
+    - 一个 change 只装一个需求；范围有歧义时必须写 Non-goals
+    - 可测试行为必须用 WHEN/THEN 格式（关键词保留英文，描述用中文）
+    - 明确列出受影响的 apps/* 目录与网关路径
+    - 造新模式前先参考 openspec/changes/ 里已有 capability 的写法
+    - 每个 change 目录配一句话中文 README.md，并在 openspec/changes/README.md 总索引登记
   specs:
-    - Use GIVEN/WHEN/THEN for all scenarios
-    - Split specs by capability (e.g. *-api / *-ui / *-integration) when crossing front + backend
-    - Cover happy path, edge cases, and error cases
-    - Express expected behavior, not implementation; name HTTP paths and UI routes when relevant
+    - 正文用中文写；场景一律 GIVEN/WHEN/THEN 结构（关键词保留英文）
+    - 跨前后端时按 capability 拆分 spec（如 *-api / *-ui / *-integration）
+    - 覆盖正常路径、边界情况和错误情况
+    - 描述期望行为而非实现；涉及接口/页面时写明 HTTP 路径和 UI 路由
   design:
-    - State which apps/* dirs change and which stay read-only
-    - Include gateway/nginx/compose/env var changes when adding routes or ports
-    - Reference scaffold doc for new sub-apps; prefer copying inventory-front template
-    - "Go changes: follow handler → service → repository; front changes: *Api.ts L1/L3 split"
-    - "Verification: list commands per app (pnpm dev, go test, docker compose)"
+    - 正文用中文写；说明哪些 apps/* 目录会改、哪些保持只读
+    - 新增路由或端口时，写明 gateway/nginx/compose/env 的同步改动
+    - 新子应用参考脚手架文档，优先复制 inventory-front 范本
+    - Go 改动遵循 handler → service → repository；前端改动遵循 *Api.ts 的 L1/L3 分层
+    - 验证章节按 app 列出命令（pnpm dev、go test、docker compose）
   tasks:
-    - "Group tasks by app or infra layer; each task independently verifiable"
-    - 'Checkbox format "- [ ]"; order: infra/gateway → backend → front → host integration → docs'
-    - "Cross-repo: note which app repo gets its own commit"
-    - "Do not combine unrelated refactors with feature tasks"
+    - 正文用中文写；按 app 或 infra 层分组，每个任务可独立验证
+    - 复选框格式 "- [ ]"；顺序：infra/网关 → 后端 → 前端 → host 集成 → 文档
+    - 跨仓库时注明哪个 app 仓库单独 commit
+    - 不要把无关重构和功能任务混在一起

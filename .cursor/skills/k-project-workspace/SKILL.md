@@ -2,9 +2,9 @@
 name: k-project-workspace
 description: >-
   k-project monorepo conventions: microfrontend host navigation API, user-backend
-  Gin/GORM patterns, user-front admin pages. Use when changing apps/host navigation,
-  apps/user-backend APIs, apps/user-front, docs/NAVIGATION_CONFIG.md, or cross-app
-  env/ports in this workspace.
+  Gin/GORM patterns, user-front admin pages, inventory system. Use when changing
+  apps/host navigation, apps/user-backend APIs, apps/user-front, apps/inventory-front,
+  docs/NAVIGATION_CONFIG.md, or cross-app env/ports in this workspace.
 ---
 
 # k-project 工作区（聚合）
@@ -16,10 +16,12 @@ description: >-
 | 文档 | 内容 |
 |------|------|
 | [`workspace-spec/spec-workflow.md`](../../../workspace-spec/spec-workflow.md) | OpenSpec 开 change、Cursor 命令 |
-| [`workspace-spec/TECH_CLAUDE.md`](../../../workspace-spec/TECH_CLAUDE.md) | 技术硬规则索引 |
+| [`workspace-spec/tech-rules.md`](../../../workspace-spec/tech-rules.md) | 技术硬规则索引 |
 | [`openspec/config.yaml`](../../../openspec/config.yaml) | OpenSpec AI 上下文 |
 | [`docs/NAVIGATION_CONFIG.md`](../../../docs/NAVIGATION_CONFIG.md) | Host 导航 DB/API、entryUrl 仅 env、admin 写权限 |
 | [`docs/WORKSPACE.md`](../../../docs/WORKSPACE.md) | 端口唯一信息源 |
+| [`docs/MICROFRONTEND.md`](../../../docs/MICROFRONTEND.md) | wujie 父子关系与 env |
+| [`docs/SINGLE_DOMAIN.md`](../../../docs/SINGLE_DOMAIN.md) | 同域方案 k-project.com |
 | [`AGENTS.md`](../../../AGENTS.md) | 各 `apps/*` 职责、skill 加载说明 |
 
 ## 子应用 skill（单独打开或改 backend 时）

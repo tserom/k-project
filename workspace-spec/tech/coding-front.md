@@ -18,7 +18,7 @@ Skill：`.cursor/skills/k-project-subapp-front/SKILL.md`
 
 ## API 分层（L0–L3）
 
-完整规则在根 [CLAUDE.md](../../CLAUDE.md)「API 分层」章节。摘要：
+完整规则在 [.cursor/rules/api-layering-decision.mdc](../../.cursor/rules/api-layering-decision.mdc)。摘要：
 
 | 层 | 含义 |
 |----|------|
@@ -31,7 +31,7 @@ Skill：`.cursor/skills/k-project-subapp-front/SKILL.md`
 
 ## React 可读性
 
-见 CLAUDE.md「React / 业务页可读性约定」：
+见 [.cursor/rules/react-readability-conventions.mdc](../../.cursor/rules/react-readability-conventions.mdc)：
 
 - 默认不用 `useCallback` / `useMemo`
 - 禁止 `useEffect` 串联业务

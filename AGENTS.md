@@ -1,12 +1,15 @@
 # AGENTS.md — k-project 工作区（给 AI 用）
 
+> 本文件是工作区**唯一 AI 入口**（人类入口见 `README.md`）。
+> 团队通用规范在 `.cursor/rules/*.mdc`，由 [team-agent-standards](https://github.com/tserom/team-agent-standards) 仓库 `guidelines/*.md` 经 `python3 scripts/build.py cursor` 构建后同步而来；修改请改团队仓库再同步，勿直接长期手改。
+
 ## OpenSpec
 
 **默认流程**：Superpowers brainstorming（聊需求）→ `/opsx-propose`（工件 + tasks）→ `/opsx-apply`（实现）。不用 Superpowers `writing-plans`；清单以 `tasks.md` 为准。
 
 - 三阶段说明：[workspace-spec/spec-workflow.md#标准流程superpowers-聊需求--openspec-执行](workspace-spec/spec-workflow.md#标准流程superpowers-聊需求--openspec-执行)
 - 需求讨论稿：`docs/superpowers/specs/`
-- 技术硬规则：[workspace-spec/TECH_CLAUDE.md](workspace-spec/TECH_CLAUDE.md)
+- 技术硬规则：[workspace-spec/tech-rules.md](workspace-spec/tech-rules.md)
 - AI 上下文：[openspec/config.yaml](openspec/config.yaml)
 - 变更目录：`openspec/changes/{kebab-case-en}/`
 - Cursor：`/opsx-propose` · `/opsx-apply` · `/opsx-archive`
@@ -58,7 +61,7 @@
 ## 文档索引
 
 - `workspace-spec/spec-workflow.md` — OpenSpec 开 change、多仓库 commit
-- `workspace-spec/TECH_CLAUDE.md` — 架构/前后端硬规则索引
+- `workspace-spec/tech-rules.md` — 架构/前后端硬规则索引
 - `docs/WORKSPACE.md` — 端口、仓库、依赖图
 - `docs/NAVIGATION_CONFIG.md` — Host 导航 DB/API/管理页方案（v1 已实现；代码在各 `apps/*` 仓库）
 - `docs/MICROFRONTEND.md` — wujie 父子关系与 env

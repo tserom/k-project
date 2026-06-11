@@ -1,0 +1,117 @@
+/**
+ * 内容区公共样式（布局无关）：MicroWorkspace / SubAppView / MicroNotFound 使用。
+ * 基础观感用全局 --host-* token；各布局可在自己的命名空间内覆盖（如 .modern-layout 下）。
+ */
+
+.micro-workspace__nav-alert {
+  margin-bottom: 12px;
+  border-radius: var(--host-radius);
+  border: 1px solid #fde68a;
+}
+
+.micro-workspace__panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  background: var(--host-surface);
+  border: 1px solid var(--host-border);
+  border-radius: var(--host-radius);
+  box-shadow: var(--host-shadow);
+  padding: 16px 18px 12px;
+}
+
+.micro-workspace__panel--welcome {
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+.micro-workspace__tabs.ant-tabs {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+
+  > .ant-tabs-nav {
+    margin-bottom: 8px;
+
+    &::before {
+      border-color: var(--host-border);
+    }
+  }
+
+  .ant-tabs-tab {
+    border-radius: 8px 8px 0 0;
+    transition: color 0.2s ease;
+  }
+
+  .ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #0f766e;
+    font-weight: 600;
+  }
+}
+
+.micro-workspace__tabs .ant-tabs-content-holder {
+  flex: 1;
+  min-height: 0;
+}
+
+.micro-workspace__tabs .ant-tabs-content {
+  height: 100%;
+}
+
+.micro-workspace__tabs .ant-tabs-tabpane {
+  height: 100%;
+}
+
+.micro-workspace__page {
+  box-sizing: border-box;
+}
+
+.micro-workspace__page--wujie {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+}
+
+.micro-workspace__wujie-host {
+  flex: 1;
+  min-height: 320px;
+  height: 100%;
+  margin-top: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--host-border);
+  background: #f8fafc;
+}
+
+.micro-workspace__entering,
+.micro-workspace__nav-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--host-bg);
+}
+
+.micro-workspace__entering {
+  min-height: 0;
+  flex: 1;
+}
+
+.micro-workspace__not-found {
+  flex: 1;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px dashed var(--host-border);
+}
